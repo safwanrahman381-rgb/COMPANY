@@ -37,11 +37,17 @@ for slug in pages:
     html = re.sub(rf'href="{slug}\.html(#[^"]*)?"', f'href="#page-{slug}"', html)
 overlays = overlays.replace('href="index.html#', 'href="#').replace('href="index.html"', 'href="#top"')
 
-# Inline images that exist; drop references to ones that don't (gradient fallback shows instead)
+# Inline each image once as a CSS variable; drop references to missing ones (gradient fallback shows instead)
+images = {}
 def img(m):
     p = "assets/images/" + m.group(1)
-    return f"url({data_uri(p)})" if os.path.exists(p) else "none"
+    if not os.path.exists(p):
+        return "none"
+    var = "--gc-" + re.sub(r"\W", "-", m.group(1))
+    images[var] = data_uri(p)
+    return f"var({var})"
 html = re.sub(r"url\(assets/images/([^)]+)\)", img, html)
+css = ":root{" + "".join(f"{k}:url({v});" for k, v in images.items()) + "}\n" + css
 
 html = html.replace('<link rel="stylesheet" href="assets/css/styles.css">', f"<style>{css}</style>")
 html = re.sub(r'\s*<link rel="(preload|manifest|apple-touch-icon)"[^>]*>', "", html)
