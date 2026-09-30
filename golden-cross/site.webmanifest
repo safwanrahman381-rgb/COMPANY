@@ -1,0 +1,11 @@
+{
+  "name": "The Golden Cross, Shrewsbury",
+  "short_name": "Golden Cross",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#13251d",
+  "theme_color": "#13251d",
+  "icons": [
+    { "src": "/assets/images/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
