@@ -410,7 +410,7 @@ h1,h2,h3,h4{margin:0; font-weight:inherit;}
 .lane > span{display:block; font-family:var(--m); font-size:.6rem; letter-spacing:.08em; color:var(--ink-3); text-transform:uppercase;}
 .lcard{grid-row:2; grid-column:1; position:relative; z-index:1; margin:0 6px; padding:10px 12px; border-radius:12px; background:#070b18; border:1px solid var(--current-hi); box-shadow:0 0 30px -8px var(--current-glow);
   transform:translateX(calc(300% + 60px)); animation:lmove 8s var(--ease-io) infinite;}
-.lcard b{display:block; font-size:.84rem;} .lcard small{font-family:var(--m); font-size:.6rem; color:var(--current-hi);}
+.lcard b{display:block; font-size:.84rem;} .lcard small{display:block; margin-top:3px; font-family:var(--m); font-size:.6rem; line-height:1.4; color:var(--current-hi);}
 @keyframes lmove{0%,12%{transform:translateX(0); opacity:1;} 25%,37%{transform:translateX(calc(100% + 20px));} 50%,62%{transform:translateX(calc(200% + 40px));} 75%,92%{transform:translateX(calc(300% + 60px)); opacity:1;} 100%{transform:translateX(calc(300% + 60px)); opacity:0;}}
 .lslot, .ltick{grid-row:3; margin:10px 6px 0; align-self:start;}
 .lslot{grid-column:3; display:grid; gap:2px; padding:8px 10px; border-radius:10px; border:1px dashed var(--current-hi); background:rgba(77,124,255,.1); animation:lslot 8s var(--ease) infinite;}
@@ -511,11 +511,12 @@ h1,h2,h3,h4{margin:0; font-weight:inherit;}
 .demos{display:grid; gap:14px;}
 @media (min-width:980px){ .demos{grid-template-columns:320px 1fr;} }
 .demo-tabs{display:grid; gap:8px; align-content:start;}
-@media (max-width:979px){ .demo-tabs{grid-template-columns:repeat(2, 1fr);} }
+@media (max-width:979px){ .demos{grid-template-columns:minmax(0,1fr);} .demo-tabs{grid-template-columns:repeat(2, minmax(0,1fr));} }
 .demo-t{text-align:left; padding:18px; border-radius:14px; border:1px solid var(--line); transition:all .25s;}
 .demo-t b{display:block; font-weight:800; font-stretch:122%; text-transform:uppercase; font-size:.95rem; line-height:1.15;}
 .demo-t span{display:block; margin-top:6px; color:var(--ink-3); font-size:.82rem;}
 .demo-t[aria-selected="true"]{border-color:var(--current-hi); background:rgba(77,124,255,.07);}
+@media (max-width:600px){ .demo-t{padding:14px;} .demo-t b{font-stretch:108%; font-size:.88rem;} }
 .demo-p{padding:clamp(20px, 3.4vw, 44px); display:grid; gap:28px;}
 @media (min-width:1100px){ .demo-p{grid-template-columns:1fr 1fr; gap:48px;} }
 .demo-p h3{margin:16px 0 12px;}
