@@ -8,13 +8,18 @@
 const CONFIG = {
   // Serverless endpoint for the "Talk to Blackline" demo, e.g. '/api/ai'.
   // Should accept POST {message} and return {headline, steps:[[title, detail, isHuman]], notes:[[label, text]]}.
-  // Keep the model API key on the server. Leave null to use the in-browser rule engine.
+  // Keep the model API key on the server, never in this file. Leave null to use the in-browser rule engine.
+  // If you turn it on: the Talk badge switches to a "text is sent to an AI provider" notice, privacy.html must
+  // name the AI provider, and an endpoint on another origin must be added to connect-src in _headers.
   aiEndpoint: null,
   // Formspree form that receives project briefs (POSTed as JSON). Replace the placeholder with the
   // form ID from your Formspree dashboard. Until then nothing is sent and visitors get the email fallback.
   contactEndpoint: 'https://formspree.io/f/[FORMSPREE_FORM_ID]',
   // Shown with a mailto: link if sending fails.
-  contactEmail: '[CONTACT_EMAIL]'
+  contactEmail: '[CONTACT_EMAIL]',
+  // Analytics or marketing trackers that need consent. Keep this EMPTY until you need one: while it's empty
+  // no cookie banner renders, no cookies are set and nothing third-party loads. See "Consent" below.
+  trackers: []
 };
 
 /* ---------------------------------------------------------
@@ -101,21 +106,75 @@ $$('[data-reveal]').forEach(el => {
 });
 
 /* ---------------------------------------------------------
-   04 Loader — once per session, ~1.9s, skippable by motion prefs
+   04 Loader — ~1.9s on arrival. Skipped when coming from another page of this site
+   (e.g. back from the privacy policy) or with reduced motion. Nothing is stored on the device.
    --------------------------------------------------------- */
 (() => {
   const L = $('#loader');
-  let seen = false;
-  try { seen = sessionStorage.getItem('bl-intro') === '1'; } catch (e) {}
+  let fromHere = false;
+  try { fromHere = !!doc.referrer && new URL(doc.referrer).origin === location.origin; } catch (e) {}
   const done = () => { doc.body.classList.remove('is-loading'); };
-  if (RM || seen) { L.classList.add('done'); done(); return; }
-  try { sessionStorage.setItem('bl-intro', '1'); } catch (e) {}
+  if (RM || fromHere) { L.classList.add('done'); done(); return; }
   requestAnimationFrame(() => requestAnimationFrame(() => {
     L.classList.add('s1');
     setTimeout(() => L.classList.add('s2'), 420);
     setTimeout(() => { L.classList.add('s3'); done(); }, 1250);
     setTimeout(() => L.classList.add('done'), 2100);
   }));
+})();
+
+/* ---------------------------------------------------------
+   Consent — dormant. Nothing below runs while CONFIG.trackers is empty.
+   When it has entries: a banner with equal Accept / Reject buttons, the choice kept in a
+   first-party cookie (bl_consent, 6 months), every tracker blocked until Accept, and a
+   "Cookie settings" link in the footer (or /#cookie-settings from any page) to reopen it.
+
+   Adding the Meta Pixel later:
+   1. Update privacy.html at the same time: what the pixel collects, that Meta receives it,
+      how long it's kept, and that the lawful basis is your consent.
+   2. Add an entry to CONFIG.trackers:
+        { name: 'the Meta Pixel', load() {
+            // Meta's base code, but built here instead of pasted into the page: define window.fbq,
+            // add <script src="https://connect.facebook.net/en_US/fbevents.js"> with
+            // document.createElement('script'), then fbq('init', 'YOUR_PIXEL_ID'); fbq('track', 'PageView');
+        } }
+      The pixel must only ever run inside load(), which is only called after Accept.
+      Don't paste Meta's <script> or <noscript> snippet into the HTML.
+   3. Allow Meta in the Content-Security-Policy in _headers:
+        script-src https://connect.facebook.net; img-src https://www.facebook.com; connect-src https://www.facebook.com
+   4. Add <a href="/#cookie-settings">Cookie settings</a> to the footers of privacy.html, terms.html,
+      accessibility.html and 404.html (they don't run this script).
+   --------------------------------------------------------- */
+(() => {
+  const T = CONFIG.trackers;
+  if (!Array.isArray(T) || !T.length) return;
+  const KEY = 'bl_consent', MAX_AGE = 60 * 60 * 24 * 182;
+  const read = () => (doc.cookie.match(/(?:^|;\s*)bl_consent=(accept|reject)(?:;|$)/) || [])[1] || null;
+  const write = v => { doc.cookie = `${KEY}=${v}; Max-Age=${MAX_AGE}; Path=/; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`; };
+  let loaded = false;
+  const load = () => { if (loaded) return; loaded = true; T.forEach(t => { try { t.load(); } catch (e) { /* one tracker failing shouldn't break the page */ } }); };
+  const names = joinAnd(T.map(t => t.name));
+  const bar = doc.createElement('div');
+  bar.className = 'consent'; bar.hidden = true;
+  bar.setAttribute('role', 'region'); bar.setAttribute('aria-labelledby', 'consentT');
+  bar.innerHTML = `<p class="mono" id="consentT">Cookies</p><p>We'd like to use ${esc(names)} to understand how the site is used. This sets cookies, and nothing runs unless you accept. You can change your mind at any time from "Cookie settings" at the bottom of the page. <a href="privacy.html">Privacy Policy</a></p>
+    <div class="btn-row"><button type="button" class="btn btn-g btn-s" data-c="reject"><span>Reject</span></button><button type="button" class="btn btn-g btn-s" data-c="accept"><span>Accept</span></button></div>`;
+  doc.body.appendChild(bar);
+  const open = focus => { bar.hidden = false; if (focus) $('button', bar).focus(); };
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('[data-c]'); if (!b) return;
+    const v = b.dataset.c;
+    write(v); bar.hidden = true;
+    if (location.hash === '#cookie-settings') history.replaceState(null, '', location.pathname + location.search);
+    if (v === 'accept') load();
+    else if (loaded) location.reload(); // trackers can't be unloaded, so reload the page without them
+  });
+  const link = $('#cookieSettings');
+  if (link) { link.hidden = false; link.addEventListener('click', () => open(true)); }
+  addEventListener('hashchange', () => { if (location.hash === '#cookie-settings') open(true); });
+  const choice = read();
+  if (choice === 'accept') load();
+  if (!choice || location.hash === '#cookie-settings') open(location.hash === '#cookie-settings');
 })();
 
 /* ---------------------------------------------------------
@@ -913,7 +972,10 @@ function localPlan(text) {
   const EX = ['We manage 300 properties and get around 40 viewing requests a week.', 'Tenants report repairs by phone, email and WhatsApp and things get lost.', 'We spend days every month chasing late rent.', 'Landlords want monthly statements and we build them all by hand.'];
   ex.innerHTML = EX.map(e => `<button class="chip" type="button">${esc(e)}</button>`).join('');
   ex.addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { input.value = b.textContent; send(); } });
-  if (CONFIG.aiEndpoint) mode.textContent = 'Responses come from a live model through a server endpoint. Keep details general.';
+  if (CONFIG.aiEndpoint) {
+    $('.tag', mode.parentElement).lastChild.textContent = 'Live AI';
+    mode.textContent = "What you type here is sent to an AI provider to write the reply. Please don't enter personal details.";
+  }
   let busy = false;
   async function getPlan(text) {
     if (CONFIG.aiEndpoint) {
