@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
 <title>BLACKLINE — Systems that work.</title>
-<meta name="description" content="AI automation, intelligent systems and digital experiences built around how your business actually operates.">
+<meta name="description" content="Automation and AI connected to the tools you already use. Every enquiry answered, booked and followed up — without anyone doing it by hand.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -34,6 +34,7 @@
     <a href="#top" class="logo" aria-label="Blackline, back to top"><span class="bar"></span>BLACKLINE</a>
     <button class="nav-tog" id="navTog" aria-expanded="false" aria-controls="navLinks" aria-label="Menu"><i></i><i></i></button>
     <div class="nav-links" id="navLinks">
+      <a href="#leak">What we fix</a>
       <a href="#services">Services</a>
       <a href="#build">Build a system</a>
       <a href="#demos">Demos</a>
@@ -54,7 +55,7 @@
     <div class="hero-copy" id="heroCopy">
       <div class="wrap">
         <h1 class="d"><span>Your business</span><span>shouldn't run</span><span>on manual work.</span></h1>
-        <p class="hsub">Blackline builds the system behind it.</p>
+        <p class="hsub"><span>We automate the repetitive work — enquiries, bookings, follow-ups, admin — using AI connected to the tools you already use.</span></p>
         <div class="btn-row">
           <a href="#intake" class="btn btn-p" data-magnetic><span>Build your system →</span></a>
           <a href="#leak" class="btn btn-g" data-magnetic><span>Explore Blackline ↓</span></a>
@@ -70,10 +71,10 @@
 </section>
 
 <!-- 07 leak -->
-<section class="sec" id="leak" data-rail="Leaks">
+<section class="sec" id="leak" data-rail="What we fix">
   <div class="wrap">
     <div class="sec-head split">
-      <h2 class="d d-l" data-reveal>Where is your business losing time?</h2>
+      <div><p class="mono accent eyebrow">What we fix</p><h2 class="d d-l" data-reveal>Where is your business losing time?</h2></div>
       <p class="lede">Pick one. We'll show you how it's usually done by hand, then what it looks like as a system.</p>
     </div>
     <div class="leak-grid" id="leakGrid" role="group" aria-label="Choose an area"></div>
@@ -86,6 +87,7 @@
         <h3><span class="lc-l"><span class="mono">As a system</span><small>Steps you still do</small></span><span class="leak-count accent" id="leakCountB">–</span></h3>
         <div id="leakAuto"></div>
       </div>
+      <div class="leak-fx" id="leakFx"></div>
     </div>
     <div class="leak-foot">
       <p class="dim" style="font-size:.88rem">Counts are steps a person does themselves. Illustrative workflows, not a guarantee for every business.</p>
@@ -150,7 +152,7 @@
 <section class="sec" id="services" data-rail="Services">
   <div class="wrap">
     <div class="sec-head split">
-      <h2 class="d d-l" data-reveal>What we build</h2>
+      <div><p class="mono accent eyebrow">How we build it</p><h2 class="d d-l" data-reveal>What we build</h2></div>
       <p class="lede">Six things, usually combined. Select one to see how it works.</p>
     </div>
     <div class="svc">
@@ -173,7 +175,7 @@
     <div class="glass talk lit">
       <div class="talk-in">
         <label class="sr" for="talkIn">Describe your business</label>
-        <textarea class="field" id="talkIn" rows="2" maxlength="600" placeholder="I run a roofing company and get around 30 enquiries every week."></textarea>
+        <textarea class="field" id="talkIn" rows="2" maxlength="600" placeholder="We manage 150 properties and get around 30 enquiries a week."></textarea>
         <button class="btn btn-p" id="talkGo" aria-label="Send" data-magnetic><span>Send</span></button>
       </div>
       <div class="talk-ex" id="talkEx"></div>
@@ -199,7 +201,7 @@
   <div class="wrap">
     <div class="sec-head split">
       <h2 class="d d-l" data-reveal>System demos</h2>
-      <p class="lede">Example builds for common business types. These are demonstrations of how we'd design each system, not client results.</p>
+      <p class="lede">Example builds for property managers. These are demonstrations of how we'd design each system, not client results.</p>
     </div>
     <div class="demos">
       <div class="demo-tabs" id="demoTabs" role="tablist" aria-label="Demo systems"></div>
@@ -208,53 +210,57 @@
   </div>
 </section>
 
-<!-- 14 website demo -->
-<section class="sec" id="web" data-rail="Front end">
+<!-- 14 existing website demo -->
+<section class="sec" id="web" data-rail="Your site">
   <div class="wrap">
     <div class="sec-head split">
-      <h2 class="d d-l" data-reveal>We don't just automate the back end.</h2>
-      <p class="lede">We build the website too, and wire it straight into the system. Switch devices, then send a test enquiry through the demo site.</p>
+      <h2 class="d d-l" data-reveal>We work with the site you already have.</h2>
+      <p class="lede">No rebuild. We connect the enquiry form on your existing site to the system behind it. Send a test enquiry and watch where it goes.</p>
     </div>
     <div class="web-sw" role="group" aria-label="Preview size">
       <button aria-pressed="true" data-d="desktop">Desktop</button><button aria-pressed="false" data-d="tablet">Tablet</button><button aria-pressed="false" data-d="mobile">Mobile</button>
     </div>
     <div class="web-lay">
       <div class="device" id="device" data-d="desktop">
-        <div class="dbar">castell-roofing.demo</div>
+        <div class="dbar"><span class="tag"><i></i>Existing site · untouched</span><span class="durl" id="dUrl">harbourside-pm.demo</span></div>
         <div class="mock">
-          <div class="mk-nav"><b>Castell Roofing</b><nav><span>Repairs</span><span>New roofs</span><span>Guttering</span><span>Contact</span></nav></div>
+          <div class="mk-nav"><b>Harbourside Property Management</b><nav><span>Properties</span><span>Landlords</span><span>Tenants</span><span>Contact</span></nav></div>
           <div class="mk-hero">
             <div>
-              <h4>Roof leaking? We'll tell you what it needs, honestly.</h4>
-              <p>Repairs, replacements and guttering. Tell us what's happening and we'll come back to you with next steps.</p>
-              <div class="mk-trust"><span>Fully insured</span><span>Written quotes</span><span>Local team</span></div>
+              <h4>Homes to rent across the area.</h4>
+              <p>Flats and houses to rent, managed by a local team. Ask about any of our properties below and we'll get back to you.</p>
+              <div class="mk-trust"><span>Office open Mon–Fri, 9am–5pm</span><span>Landlords welcome</span></div>
             </div>
             <form class="mk-form" id="mkForm" novalidate>
-              <b>Request a callback</b>
-              <label>Name<input name="name" required autocomplete="off" value="Sam Rees"></label>
-              <label>Postcode<input name="pc" required autocomplete="off" value="CF24 3AA"></label>
-              <label>What's the problem?
-                <select name="job"><option>Leak after heavy rain</option><option>Missing or slipped tiles</option><option>Flat roof replacement</option><option>Guttering blocked</option></select>
+              <b>Enquire about a property</b>
+              <label>Name<input name="name" required autocomplete="off" value="Sarah Jones"></label>
+              <label>Email<input name="email" type="email" required autocomplete="off" value="sarah@example.com"></label>
+              <label>Which property?
+                <select name="prop"><option>2-bed flat, Maple Court</option><option>3-bed house, Station Road</option><option>1-bed flat, Quay Street</option></select>
+              </label>
+              <label>I'd like to…
+                <select name="intent"><option>Book a viewing</option><option>Ask a question</option></select>
               </label>
               <button type="submit">Send enquiry</button>
               <span class="ok" id="mkOk">Thanks. We've got it and we'll be in touch shortly.</span>
             </form>
           </div>
           <div class="mk-svc">
-            <div><b>Repairs</b><p>Leaks, slipped tiles, flashing and storm damage.</p></div>
-            <div><b>New roofs</b><p>Pitched and flat roofs, with a written quote.</p></div>
-            <div><b>Guttering</b><p>Clearing, repairs and full replacement.</p></div>
+            <div><b>Properties to let</b><p>Flats and houses available now and coming up soon.</p></div>
+            <div><b>For landlords</b><p>Full management or tenant-find for your property.</p></div>
+            <div><b>Report a repair</b><p>Current tenants: tell us what needs fixing.</p></div>
           </div>
         </div>
       </div>
       <div class="glass pipe">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:10px"><span class="mono dim">Behind the site</span><span class="tag"><i></i>Simulated</span></div>
         <ol id="pipe">
-          <li data-k="web">Website <em></em></li><li data-k="form">Form <em></em></li><li data-k="ai">AI <em></em></li><li data-k="crm">CRM <em></em></li><li data-k="auto">Automation <em></em></li>
+          <li data-k="form">Existing form <em></em></li><li data-k="ai">AI <em></em></li><li data-k="crm">CRM <em></em></li><li data-k="cal">Calendar <em></em></li><li data-k="follow">Follow-up <em></em></li>
         </ol>
-        <div class="log" id="pipeLog" aria-live="polite"><span class="dim">Submit the demo form to watch the enquiry move through. Castell Roofing is a fictional business.</span></div>
+        <div class="log" id="pipeLog" aria-live="polite"><span class="dim">Submit the demo form to watch the enquiry move through.</span></div>
       </div>
     </div>
+    <p class="web-cap dim">Harbourside Property Management is a fictional business. The point: the site stays exactly as it is.</p>
   </div>
 </section>
 
@@ -298,7 +304,7 @@
       <div class="pl"><i id="procFill"></i></div>
       <div class="pst"><svg viewBox="0 0 44 44"><circle cx="19" cy="19" r="11"/><path d="M27 27l10 10"/></svg><span class="no">01</span><h3>Discover</h3><p>Find where time and opportunities are being lost.</p></div>
       <div class="pst"><svg viewBox="0 0 44 44"><rect x="5" y="8" width="12" height="9" rx="2"/><rect x="27" y="27" width="12" height="9" rx="2"/><path d="M17 12h8v19h2"/></svg><span class="no">02</span><h3>Design</h3><p>Design the system around how the business actually runs.</p></div>
-      <div class="pst"><svg viewBox="0 0 44 44"><path d="M14 14L6 22l8 8M30 14l8 8-8 8M25 10l-6 24"/></svg><span class="no">03</span><h3>Build</h3><p>Build the website, automation, AI and integrations.</p></div>
+      <div class="pst"><svg viewBox="0 0 44 44"><path d="M14 14L6 22l8 8M30 14l8 8-8 8M25 10l-6 24"/></svg><span class="no">03</span><h3>Build</h3><p>Build the automation, AI and integrations.</p></div>
       <div class="pst"><svg viewBox="0 0 44 44"><path d="M8 22l9 9 19-19"/><circle cx="22" cy="22" r="18"/></svg><span class="no">04</span><h3>Test</h3><p>Test the edge cases, the failures and the human handoff.</p></div>
       <div class="pst"><svg viewBox="0 0 44 44"><path d="M22 36V8M12 18l10-10 10 10M8 38h28"/></svg><span class="no">05</span><h3>Deploy</h3><p>Launch it, with your team shown how it works.</p></div>
       <div class="pst"><svg viewBox="0 0 44 44"><path d="M6 34l10-10 7 6 15-18"/><path d="M30 12h8v8"/></svg><span class="no">06</span><h3>Optimise</h3><p>Improve it as the business grows and changes.</p></div>
@@ -332,13 +338,13 @@
         <div class="in-step" data-s="1">
           <span class="mono dim">Step 2 of 4</span>
           <h3 class="d d-m"><label for="inBiz">What does your business do?</label></h3>
-          <input class="field" id="inBiz" maxlength="160" placeholder="e.g. Roofing and guttering, 4 staff">
+          <input class="field" id="inBiz" maxlength="160" placeholder="e.g. Property management, 180 homes, 5 staff">
           <div class="in-quick" id="inBizQ"></div>
         </div>
         <div class="in-step" data-s="2">
           <span class="mono dim">Step 3 of 4</span>
           <h3 class="d d-m"><label for="inMan">What are you currently doing manually?</label></h3>
-          <textarea class="field" id="inMan" rows="4" maxlength="800" placeholder="e.g. Reading every enquiry, copying details into a spreadsheet, chasing quotes that go quiet."></textarea>
+          <textarea class="field" id="inMan" rows="4" maxlength="800" placeholder="e.g. Reading every portal enquiry, booking viewings by email, chasing late rent."></textarea>
           <div class="in-quick" id="inManQ"></div>
         </div>
         <div class="in-step" data-s="3">
@@ -370,7 +376,7 @@
   <div class="wrap">
     <div class="foot-in">
       <a href="#top" class="logo"><span class="bar"></span>BLACKLINE</a>
-      <nav aria-label="Footer"><a href="#services">Services</a><a href="#build">Build a system</a><a href="#demos">Demos</a><a href="#process">Process</a><a href="#intake">Start a project</a></nav>
+      <nav aria-label="Footer"><a href="#leak">What we fix</a><a href="#services">Services</a><a href="#build">Build a system</a><a href="#demos">Demos</a><a href="#process">Process</a><a href="#intake">Start a project</a></nav>
       <span>© 2026 Blackline. Systems that work.</span>
     </div>
     <div class="big-mark" aria-hidden="true">BLACKLINE</div>
