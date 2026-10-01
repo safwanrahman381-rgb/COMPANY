@@ -9,6 +9,7 @@
 <title>Accessibility — BLACKLINE</title>
 <meta name="description" content="How the BLACKLINE website supports accessibility, its known limitations and how to report a problem.">
 <link rel="canonical" href="https://[DOMAIN]/accessibility.html">
+<link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -40,13 +41,16 @@
       <ul>
         <li><strong>Keyboard navigation.</strong> Everything can be reached and used with a keyboard, with a visible focus outline and a “Skip to content” link.</li>
         <li><strong>Reduced motion.</strong> If your device is set to reduce motion, animations are switched off and the scroll-driven scenes show their finished state.</li>
-        <li><strong>Colour contrast.</strong> Text and controls are chosen to stand out clearly against the dark background.</li>
+        <li><strong>Colour contrast.</strong> Main text, headings and controls have strong contrast against the dark background.</li>
         <li><strong>Semantic structure.</strong> Pages use proper headings, landmarks and lists, so they can be navigated with a screen reader.</li>
         <li><strong>Screen reader labels.</strong> Buttons, tabs and form fields are labelled, form errors are announced, and demo updates are read out as they happen.</li>
       </ul>
 
       <h2 id="limitations">Known limitations</h2>
-      <p>Some animated demos, such as the network in the opening section, the “From chaos to system” scene and the service animations, are mainly visual and may be harder to use with assistive technology. The same information is available as text on the page: in the service descriptions, the “What we fix” step lists and the demo step lists.</p>
+      <ul>
+        <li>Some animated demos, such as the network in the opening section, the “From chaos to system” scene and the service animations, are mainly visual and may be harder to use with assistive technology. The same information is available as text on the page: in the service descriptions, the “What we fix” step lists and the demo step lists.</li>
+        <li>Some small secondary text, such as labels, captions and step counts, is deliberately dimmer than the main text and falls below the WCAG AA contrast ratio of 4.5:1. We’re reviewing this.</li>
+      </ul>
 
       <h2 id="contact">Reporting a problem or asking for another format</h2>
       <p>If you have trouble using any part of this site, or need information in a different format such as large print or plain text, email <a href="mailto:[CONTACT_EMAIL]"><span class="ph">[CONTACT_EMAIL]</span></a>. Please tell us which page and what went wrong. We aim to reply within <span class="ph">[5]</span> working days.</p>

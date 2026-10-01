@@ -196,7 +196,9 @@ $$('[data-reveal]').forEach(el => {
     track.appendChild(a); return a;
   });
   let fr = [];
+  const wide = matchMedia('(min-width:1100px)');
   const layout = () => {
+    if (!wide.matches) { fr = []; return; } // the rail is hidden below 1100px
     const max = doc.documentElement.scrollHeight - VH;
     fr = secs.map(s => clamp((s.getBoundingClientRect().top + scrollY) / max));
     ticks.forEach((t, i) => t.style.top = `calc(${fr[i] * 100}% - 4px)`);
@@ -210,7 +212,7 @@ $$('[data-reveal]').forEach(el => {
     fr.forEach((f, i) => { if (p + 0.004 >= f) here = i; });
     ticks.forEach((t, i) => { t.classList.toggle('on', i <= here); t.classList.toggle('here', i === here); });
   });
-  addEventListener('load', layout); layout();
+  addEventListener('load', layout); // also measured in the start-up frame (resizeFns)
 })();
 
 /* ---------------------------------------------------------
@@ -631,7 +633,7 @@ const Intake = {}; // filled in later; the builder can hand work to it
     svg.setAttribute('viewBox', `0 0 ${g.width} ${g.height}`);
     svg.innerHTML = out;
   }
-  function update() {
+  function update(init) {
     ['trigger', 'ai', 'action'].forEach(col => $$(`.b-opts[data-col="${col}"] .b-opt`).forEach(b => {
       const i = sel[col].indexOf(b.dataset.id);
       b.setAttribute('aria-pressed', i >= 0);
@@ -642,7 +644,7 @@ const Intake = {}; // filled in later; the builder can hand work to it
     sent.innerHTML = sentence();
     runB.disabled = sendB.disabled = !ok;
     specTxt.value = spec();
-    draw();
+    if (!init) draw(); // at start-up, resizeFns draws once the whole page exists
   }
   async function run() {
     if (running) return; running = true; runB.disabled = true;
@@ -687,7 +689,7 @@ const Intake = {}; // filled in later; the builder can hand work to it
   });
   resizeFns.push(draw);
   watch(gridEl, v => { if (v) draw(); });
-  update();
+  update(true);
 })();
 
 /* ---------------------------------------------------------
@@ -783,7 +785,7 @@ const Intake = {}; // filled in later; the builder can hand work to it
     timers.push(setTimeout(() => { if (inView) playSeq(); }, end + 3800));
   }
   function show(i, focus) {
-    if (i === cur) return; cur = i; clearT();
+    if (i === cur) return; const first = cur < 0; cur = i; clearT();
     tabs.forEach((t, j) => { t.setAttribute('aria-selected', j === i); t.tabIndex = j === i ? 0 : -1; });
     if (focus) tabs[i].focus();
     stage.setAttribute('aria-labelledby', 'svc-t' + i);
@@ -798,7 +800,7 @@ const Intake = {}; // filled in later; the builder can hand work to it
       b.setAttribute('aria-pressed', on); b.classList.toggle('is-on', on);
       const m = $(`.mod[data-m="${b.dataset.m}"]`, stage); m.classList.toggle('on', on); m.classList.toggle('off', !on);
     });
-    if (window.innerWidth < 1000 && list.scrollWidth > list.clientWidth) list.scrollTo({ left: Math.max(0, tabs[i].offsetLeft - 8), behavior: RM ? 'auto' : 'smooth' });
+    if (!first && window.innerWidth < 1000 && list.scrollWidth > list.clientWidth) list.scrollTo({ left: Math.max(0, tabs[i].offsetLeft - 8), behavior: RM ? 'auto' : 'smooth' });
   }
   list.addEventListener('click', e => { const t = e.target.closest('.svc-t'); if (t) show(+t.dataset.i); });
   list.addEventListener('keydown', e => {
@@ -1080,6 +1082,7 @@ function localPlan(text) {
     update(true);
   }
   function update(force) {
+    if (!A.length) return;
     const r = sec.getBoundingClientRect();
     if (!force && (r.bottom < 0 || r.top > VH)) return;
     const p = RM ? 1 : pinProgress(sec);
@@ -1096,7 +1099,7 @@ function localPlan(text) {
     lblR.style.opacity = clamp((p - .55) / .15);
   }
   resizeFns.push(layout); scrollFns.push(() => update());
-  addEventListener('load', layout); layout();
+  addEventListener('load', layout); // also laid out in the start-up frame (resizeFns)
 })();
 
 /* ---------------------------------------------------------
@@ -1200,7 +1203,7 @@ function localPlan(text) {
     ['REST APIs', 'Custom', 'Documented APIs, connected directly or through a small service', [6, 8, 11, 13]],
     ['Databases', 'Custom', 'Postgres, Supabase or Airtable for data that needs a proper home', [1, 2, 8, 10]]
   ];
-  const box = $('#stack'), gridEl = $('#stackGrid'), svg = $('#stackSvg'), info = $('#stackInfo');
+  const box = $('#stackBox'), gridEl = $('#stackGrid'), svg = $('#stackSvg'), info = $('#stackInfo');
   gridEl.innerHTML = TOOLS.map(([n, c], i) => `<button class="tool" type="button" data-i="${i}" aria-pressed="false"><b>${esc(n)}</b><small>${esc(c)}</small></button>`).join('');
   const tb = $$('.tool', gridEl);
   let cur = -1, auto = true, cyc, inView = false;
