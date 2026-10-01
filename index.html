@@ -338,34 +338,37 @@
         <div class="in-step" data-s="1">
           <span class="mono dim">Step 2 of 4</span>
           <h3 class="d d-m"><label for="inBiz">What does your business do?</label></h3>
-          <input class="field" id="inBiz" maxlength="160" placeholder="e.g. Property management, 180 homes, 5 staff">
+          <input class="field" id="inBiz" name="business" maxlength="2000" aria-describedby="inErr" placeholder="e.g. Property management, 180 homes, 5 staff">
           <div class="in-quick" id="inBizQ"></div>
         </div>
         <div class="in-step" data-s="2">
           <span class="mono dim">Step 3 of 4</span>
           <h3 class="d d-m"><label for="inMan">What are you currently doing manually?</label></h3>
-          <textarea class="field" id="inMan" rows="4" maxlength="800" placeholder="e.g. Reading every portal enquiry, booking viewings by email, chasing late rent."></textarea>
+          <textarea class="field" id="inMan" name="manual_work" rows="4" maxlength="2000" aria-describedby="inErr" placeholder="e.g. Reading every portal enquiry, booking viewings by email, chasing late rent."></textarea>
           <div class="in-quick" id="inManQ"></div>
         </div>
         <div class="in-step" data-s="3">
           <span class="mono dim">Step 4 of 4</span>
           <h3 class="d d-m">How should we contact you?</h3>
           <div class="in-grid">
-            <label><span class="mono dim">Name</span><input class="field" id="inName" autocomplete="name" maxlength="80"></label>
-            <label><span class="mono dim">Email</span><input class="field" id="inEmail" type="email" autocomplete="email" maxlength="120"></label>
-            <label><span class="mono dim">Phone (optional)</span><input class="field" id="inPhone" type="tel" autocomplete="tel" maxlength="30"></label>
-            <div><span class="mono dim">Prefer</span><div class="in-quick" id="inPref" role="group" aria-label="Preferred contact method"></div></div>
+            <div class="in-f"><label class="mono dim" for="inName">Name</label><input class="field" id="inName" name="name" autocomplete="name" maxlength="100" required aria-describedby="inNameErr"><p class="f-err" id="inNameErr"></p></div>
+            <div class="in-f"><label class="mono dim" for="inEmail">Email</label><input class="field" id="inEmail" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="inEmailErr"><p class="f-err" id="inEmailErr"></p></div>
+            <div class="in-f"><label class="mono dim" for="inPhone">Phone (optional)</label><input class="field" id="inPhone" name="phone" type="tel" autocomplete="tel" maxlength="30" aria-describedby="inPhoneErr"><p class="f-err" id="inPhoneErr"></p></div>
+            <div class="in-f"><span class="mono dim">Prefer</span><div class="in-quick" id="inPref" role="group" aria-label="Preferred contact method"></div></div>
           </div>
+          <div class="hp" aria-hidden="true"><label for="inHp">Leave this field empty</label><input id="inHp" name="_gotcha" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"></div>
         </div>
         <div class="in-step" data-s="4">
           <div class="brief" id="brief"></div>
           <div id="inSent"></div>
         </div>
+        <input type="hidden" name="_subject" id="inSubject" value="New BLACKLINE enquiry">
         <p class="in-err" id="inErr" role="alert"></p>
         <div class="in-nav">
           <button type="button" class="btn btn-g btn-s" id="inBack"><span>Back</span></button>
           <button type="submit" class="btn btn-p" id="inNext" data-magnetic><span>Next</span></button>
         </div>
+        <p class="in-priv" id="inPriv" hidden>We'll only use these details to reply to your enquiry. See our <a href="privacy.html">Privacy Policy</a>.</p>
       </form>
     </div>
   </div>

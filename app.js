@@ -10,10 +10,11 @@ const CONFIG = {
   // Should accept POST {message} and return {headline, steps:[[title, detail, isHuman]], notes:[[label, text]]}.
   // Keep the model API key on the server. Leave null to use the in-browser rule engine.
   aiEndpoint: null,
-  // Where project briefs are POSTed as JSON, e.g. '/api/contact' or a form-service URL.
-  contactEndpoint: '/api/contact',
-  // Optional fallback address shown if the endpoint can't be reached. '' hides it.
-  contactEmail: ''
+  // Formspree form that receives project briefs (POSTed as JSON). Replace the placeholder with the
+  // form ID from your Formspree dashboard. Until then nothing is sent and visitors get the email fallback.
+  contactEndpoint: 'https://formspree.io/f/[FORMSPREE_FORM_ID]',
+  // Shown with a mailto: link if sending fails.
+  contactEmail: '[CONTACT_EMAIL]'
 };
 
 /* ---------------------------------------------------------
@@ -1197,16 +1198,45 @@ function localPlan(text) {
   $('#inManQ').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; const v = man.value.trim(); if (!v.includes(b.textContent)) man.value = v ? v.replace(/[.\s]*$/, '') + '. ' + b.textContent + '.' : b.textContent + '.'; man.focus(); });
   $('#inPref').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; st.pref = b.textContent; $$('#inPref .chip').forEach(c => c.setAttribute('aria-pressed', c === b)); });
 
+  // Spam protection: a honeypot field and a time-trap. Either one quietly fakes success and sends nothing.
+  const hp = $('#inHp'), renderedAt = performance.now(), MIN_MS = 3000;
+  const LIMITS = { name: 100, email: 254, phone: 30, text: 2000 };
+  const val = el => el.value.trim();
+  // returns [[field or null, message], ...]; field null means a step-level message
   function validate(s) {
-    if (s === 0 && !st.svc) return 'Choose what you need, or pick "Not sure".';
-    if (s === 1 && biz.value.trim().length < 2) return 'Tell us briefly what the business does.';
-    if (s === 2 && man.value.trim().length < 4) return "Describe what's being done by hand, even roughly.";
-    if (s === 3) {
-      if (nm.value.trim().length < 2) return 'Add your name.';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em.value.trim())) return 'Add an email address we can reply to.';
-      if (st.pref === 'Phone' && ph.value.replace(/\D/g, '').length < 7) return 'Add a phone number, or choose email.';
+    const out = [];
+    if (s === 0 && !st.svc) out.push([null, 'Choose what you need, or pick "Not sure".']);
+    if (s === 1) {
+      if (val(biz).length < 2) out.push([biz, 'Tell us briefly what the business does.']);
+      else if (val(biz).length > LIMITS.text) out.push([biz, `Keep this under ${LIMITS.text} characters.`]);
     }
-    return '';
+    if (s === 2) {
+      if (val(man).length < 4) out.push([man, "Describe what's being done by hand, even roughly."]);
+      else if (val(man).length > LIMITS.text) out.push([man, `Keep this under ${LIMITS.text} characters.`]);
+    }
+    if (s === 3) {
+      const n = val(nm), e = val(em), p = val(ph), digits = p.replace(/\D/g, '');
+      if (n.length < 2) out.push([nm, 'Add your name.']);
+      else if (n.length > LIMITS.name) out.push([nm, `Keep your name under ${LIMITS.name} characters.`]);
+      if (!e) out.push([em, 'Add an email address we can reply to.']);
+      else if (e.length > LIMITS.email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) out.push([em, 'That email address doesn\u2019t look right. Check it and try again.']);
+      if (p && (p.length > LIMITS.phone || !/^[+\d][\d\s().-]*$/.test(p) || digits.length < 7 || digits.length > 15)) out.push([ph, 'That phone number doesn\u2019t look right. Use digits, spaces and an optional +.']);
+      else if (!p && st.pref === 'Phone') out.push([ph, 'Add a phone number, or choose email.']);
+    }
+    return out;
+  }
+  const fieldsOf = s => ({ 1: [biz], 2: [man], 3: [nm, em, ph] }[s] || []);
+  function showErrors(s, list) {
+    err.textContent = '';
+    fieldsOf(s).forEach(f => { f.removeAttribute('aria-invalid'); const fe = $('#' + f.id + 'Err'); if (fe) fe.textContent = ''; });
+    list.forEach(([f, m]) => {
+      if (!f) { err.textContent = m; return; }
+      f.setAttribute('aria-invalid', 'true');
+      const fe = $('#' + f.id + 'Err');
+      if (fe) fe.textContent = m; else err.textContent = m;
+    });
+    const first = list.find(([f]) => f);
+    if (first) first[0].focus();
   }
   // the service picked narrows which systems the brief can suggest
   const FITS = { booking: ['booking', 'followup', 'qualify', 'agent'], operations: ['arrears', 'maintenance', 'reporting', 'docs', 'sync'] };
@@ -1222,12 +1252,18 @@ function localPlan(text) {
   function data() {
     const S = potential();
     return {
-      ref: st.ref, service: SV.find(s => s[0] === st.svc)[1], business: biz.value.trim(), manual_work: man.value.trim(),
+      ref: st.ref, service: SV.find(s => s[0] === st.svc)[1], business: val(biz).slice(0, LIMITS.text), manual_work: val(man).slice(0, LIMITS.text),
       potential_system: { name: S.name, steps: S.steps.map(s => s[0]) },
-      contact: { name: nm.value.trim(), email: em.value.trim(), phone: ph.value.trim(), preferred: st.pref },
+      contact: { name: val(nm).slice(0, LIMITS.name), email: val(em).slice(0, LIMITS.email), phone: val(ph).slice(0, LIMITS.phone), preferred: st.pref },
       submitted_at: new Date().toISOString()
     };
   }
+  // flat fields read cleanly in the Formspree email; "email" becomes the reply-to address
+  const payload = d => ({
+    _subject: $('#inSubject').value, reference: d.ref, name: d.contact.name, email: d.contact.email, phone: d.contact.phone, preferred_contact: d.contact.preferred,
+    service: d.service, business: d.business, manual_work: d.manual_work,
+    potential_system: `${d.potential_system.name} (${d.potential_system.steps.join(' → ')})`, submitted_at: d.submitted_at
+  });
   function renderBrief() {
     if (!st.ref) st.ref = 'BL-' + new Date().getFullYear() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
     const d = data();
@@ -1240,33 +1276,46 @@ function localPlan(text) {
     sentEl.innerHTML = '<p class="dim" style="margin-top:14px;font-size:.88rem">This is a first sketch. We\u2019ll confirm what\u2019s realistic before anything is quoted.</p>';
   }
   function go(s) {
-    st.step = s; err.textContent = '';
+    st.step = s; showErrors(s, []);
     steps.forEach((el, i) => el.classList.toggle('on', i === s));
     prog.forEach((p, i) => p.classList.toggle('on', i <= s));
     back.style.visibility = s === 0 ? 'hidden' : '';
     next.style.display = s === 0 ? 'none' : '';
     $('span', next).textContent = s === 3 ? 'Create brief' : s === 4 ? 'Submit brief →' : 'Next';
+    $('#inPriv').hidden = s < 3;
     if (s === 4) renderBrief();
     const f = steps[s].querySelector('input, textarea');
     if (f && s > 0) setTimeout(() => f.focus({ preventScroll: true }), 50);
   }
+  function sent(d) {
+    sentEl.innerHTML = `<div class="sent"><div class="d d-m">Brief sent.</div><p class="lede" style="margin-top:12px">Reference ${esc(d.ref)}. We'll be in touch by ${esc(d.contact.preferred === 'Phone' ? 'phone' : 'email')} to talk it through.</p></div>`;
+    $('.in-nav', form).style.display = 'none';
+    err.textContent = '';
+  }
+  let sending = false;
   async function submit() {
-    next.disabled = true; $('span', next).textContent = 'Sending…';
+    if (sending) return;
     const d = data();
+    // bots: filled the hidden field, or got here faster than a person could
+    if (hp.value || performance.now() - renderedAt < MIN_MS) { sent(d); return; }
+    sending = true; next.disabled = true; $('span', next).textContent = 'Sending…'; err.textContent = '';
     let ok = false;
-    try {
-      const r = await fetch(CONFIG.contactEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(d) });
-      ok = r.ok;
-    } catch (e) { ok = false; }
-    if (ok) {
-      sentEl.innerHTML = `<div class="sent"><div class="d d-m">Brief sent.</div><p class="lede" style="margin-top:12px">Reference ${esc(d.ref)}. We'll be in touch by ${esc(d.contact.preferred === 'Phone' ? 'phone' : 'email')} to talk it through.</p></div>`;
-      $('.in-nav', form).style.display = 'none';
-      return;
+    const configured = CONFIG.contactEndpoint && !CONFIG.contactEndpoint.includes('[');
+    if (configured) {
+      try {
+        const r = await fetch(CONFIG.contactEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload(d)) });
+        ok = r.status >= 200 && r.status < 300;
+      } catch (e) { ok = false; }
     }
+    sending = false;
+    if (ok) { sent(d); return; }
+    // never show success here: say what happened, keep everything typed, offer email instead
     const text = `BLACKLINE PROJECT BRIEF ${d.ref}\nService: ${d.service}\nBusiness: ${d.business}\nProblem: ${d.manual_work}\nPotential system: ${d.potential_system.name} (${d.potential_system.steps.join(' → ')})\nContact: ${d.contact.name}, ${d.contact.email}${d.contact.phone ? ', ' + d.contact.phone : ''} (prefers ${d.contact.preferred})`;
-    sentEl.innerHTML = `<div class="sent"><p class="in-err" style="color:var(--ink)">The brief wasn't sent: this page isn't connected to a server yet. Copy it${CONFIG.contactEmail ? ' or email it' : ''} instead.</p>
-      <div class="btn-row" style="margin-top:14px"><button type="button" class="btn btn-g btn-s" id="inCopy"><span>Copy brief</span></button>${CONFIG.contactEmail ? `<a class="btn btn-g btn-s" href="mailto:${esc(CONFIG.contactEmail)}?subject=${encodeURIComponent('Project brief ' + d.ref)}&body=${encodeURIComponent(text)}"><span>Email brief</span></a>` : ''}</div>
-      <textarea class="field" id="inCopyTxt" rows="6" readonly style="margin-top:12px;display:none;font-family:var(--m);font-size:.74rem">${esc(text)}</textarea></div>`;
+    const mail = CONFIG.contactEmail;
+    const body = text.length > 1800 ? text.slice(0, 1790) + '…' : text;
+    err.innerHTML = `Sorry, your brief didn't send. Nothing you typed has been lost: try again${mail ? `, or email it to <a href="mailto:${esc(mail)}?subject=${encodeURIComponent('Project brief ' + d.ref)}&body=${encodeURIComponent(body)}">${esc(mail)}</a>` : ''}.`;
+    sentEl.innerHTML = `<div class="btn-row" style="margin-top:14px"><button type="button" class="btn btn-g btn-s" id="inCopy"><span>Copy brief</span></button></div>
+      <textarea class="field" id="inCopyTxt" rows="6" readonly style="margin-top:12px;display:none;font-family:var(--m);font-size:.74rem" aria-label="Your brief">${esc(text)}</textarea>`;
     $('#inCopy').addEventListener('click', async () => {
       const done = await copyText(text);
       const ta = $('#inCopyTxt'); if (!done) { ta.style.display = 'block'; ta.select(); }
@@ -1277,7 +1326,9 @@ function localPlan(text) {
   form.addEventListener('submit', e => {
     e.preventDefault();
     if (st.step === 4) { submit(); return; }
-    const m = validate(st.step); if (m) { err.textContent = m; return; }
+    const problems = validate(st.step);
+    showErrors(st.step, problems);
+    if (problems.length) return;
     go(st.step + 1);
   });
   back.addEventListener('click', () => { if (st.step > 0) go(st.step - 1); });

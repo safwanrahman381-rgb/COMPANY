@@ -622,7 +622,14 @@ h1,h2,h3,h4{margin:0; font-weight:inherit;}
 .in-quick{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
 .in-grid{display:grid; gap:12px;}
 @media (min-width:760px){ .in-grid{grid-template-columns:1fr 1fr;} }
-.in-grid label{display:grid; gap:8px;}
+.in-f{display:grid; gap:8px; align-content:start;}
+.f-err{color:#ffb4a8; font-size:.84rem; min-height:0;}
+.f-err:empty{display:none;}
+.field[aria-invalid="true"]{border-color:#ffb4a8;}
+.in-err a, .in-priv a{color:var(--ink); text-decoration:underline; text-underline-offset:3px;}
+.in-priv{margin-top:14px; font-size:.82rem; color:var(--ink-3); max-width:60ch;}
+/* honeypot: off screen for people, still in the form for bots */
+.hp{position:absolute!important; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;}
 .in-nav{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:30px;}
 .in-err{color:#ffb4a8; font-size:.86rem; min-height:1.3em; margin-top:10px;}
 .brief{border:1px solid var(--line-2); border-radius:18px; overflow:hidden;}
