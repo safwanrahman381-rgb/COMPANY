@@ -60,6 +60,7 @@ h1,h2,h3,h4{margin:0; font-weight:inherit;}
 ::selection{background:var(--current); color:#fff;}
 :focus-visible{outline:2px solid var(--current-hi); outline-offset:3px; border-radius:6px;}
 .sr{position:absolute!important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+.sr.skip:focus{position:fixed!important; left:16px; top:16px; z-index:300; width:auto; height:auto; clip:auto; padding:10px 18px; border-radius:999px; background:var(--ink); color:#000; font-weight:700;}
 
 /* grain — one fixed layer, no blend mode (cheap) */
 .grain{position:fixed; inset:-50%; z-index:90; pointer-events:none; opacity:.055;
@@ -661,7 +662,44 @@ h1,h2,h3,h4{margin:0; font-weight:inherit;}
 .foot-in{display:flex; flex-wrap:wrap; justify-content:space-between; gap:18px; color:var(--ink-3); font-size:.85rem;}
 .foot-in nav{display:flex; gap:22px; flex-wrap:wrap;}
 .foot-in nav a:hover{color:var(--ink);}
+.foot-legal{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:14px 28px; margin-top:24px; padding-top:20px; border-top:1px solid var(--line); color:var(--ink-3); font-size:.82rem; line-height:1.6;}
+.foot-legal nav{display:flex; flex-wrap:wrap; gap:6px 20px;}
+.foot-legal button{color:inherit; font-size:inherit;}
+.foot-legal a:hover, .foot-legal button:hover{color:var(--ink);}
+.foot-legal a[href^="mailto"]{text-decoration:underline; text-underline-offset:3px;}
+/* unfilled placeholders stand out so they're easy to find and replace */
+.ph{font-family:var(--m); font-size:.86em; letter-spacing:0; background:rgba(255,196,0,.14); color:#ffd36b; padding:1px 5px; border-radius:4px; overflow-wrap:anywhere;}
 .big-mark{font-weight:900; font-stretch:125%; font-size:clamp(3rem, 15.5vw, 17rem); line-height:.8; letter-spacing:-.04em; color:transparent; -webkit-text-stroke:1px var(--ink-4); margin-top:clamp(40px, 6vw, 90px); white-space:nowrap; overflow:hidden; user-select:none;}
+
+/* =========================================================
+   Legal pages (privacy, terms, accessibility) and 404
+   ========================================================= */
+.legal{position:relative; z-index:2; padding-top:calc(72px + env(safe-area-inset-top,0px) + clamp(44px, 7vw, 104px)); padding-bottom:clamp(64px, 9vw, 140px);}
+.doc{max-width:760px;}
+.doc h1{margin:14px 0 16px;}
+.doc .doc-meta{margin-bottom:clamp(28px, 4vw, 48px); color:var(--ink-3);}
+.doc .doc-intro{font-size:1.08rem; color:var(--ink-2); max-width:60ch;}
+.doc h2{font-weight:800; font-stretch:118%; text-transform:uppercase; font-size:clamp(1.05rem, 1.7vw, 1.4rem); letter-spacing:.005em; line-height:1.2; margin:44px 0 14px; padding-top:22px; border-top:1px solid var(--line);}
+.doc h3{font-weight:750; font-size:1.02rem; margin:22px 0 6px;}
+.doc p, .doc li, .doc td{color:var(--ink-2);}
+.doc p + p, .doc ul + p, .doc table + p{margin-top:12px;}
+.doc ul{margin:12px 0 0; padding-left:1.2em; display:grid; gap:8px;}
+.doc li::marker{color:var(--current-hi);}
+.doc a{color:var(--ink); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--current-hi);}
+.doc strong{color:var(--ink); font-weight:700;}
+.doc table{width:100%; border-collapse:collapse; margin-top:14px; font-size:.95rem;}
+.doc th, .doc td{text-align:left; vertical-align:top; padding:12px 14px 12px 0; border-bottom:1px solid var(--line);}
+.doc th{font-family:var(--m); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); font-weight:500;}
+.doc td:first-child{color:var(--ink); width:46%;}
+@media (max-width:600px){
+  .doc thead{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);}
+  .doc tr, .doc td{display:block; width:auto!important;}
+  .doc tr{padding:12px 0; border-bottom:1px solid var(--line);} .doc tr:last-child{border-bottom:0;}
+  .doc td{padding:0; border:0;} .doc td + td{margin-top:4px;}
+}
+.legal-nav .btn{--h:40px;}
+@media (max-width:480px){ .legal-nav .hide-s{display:none;} }
+.nf{min-height:70vh; display:grid; align-content:center; gap:28px;}
 
 /* cookie consent banner — dormant: only rendered when CONFIG.trackers has entries */
 .consent{position:fixed; left:calc(var(--pad) + var(--rail)); right:var(--pad); bottom:calc(16px + env(safe-area-inset-bottom,0px)); z-index:150; max-width:520px; display:grid; gap:12px; padding:18px 20px;
