@@ -1,9 +1,8 @@
-# Netlify redirects: send the Netlify address and www to one canonical domain.
+# Netlify redirects: send the Netlify address and www to the main domain, blacklinehq.co.uk.
 #
-# These rules are switched off (commented out) until the domain is ready, so nothing breaks before then:
-# 1. Add your domain to the site in Netlify's domain settings first. Netlify then sets up HTTPS for it automatically.
-# 2. Replace [DOMAIN] below with that domain (e.g. example.co.uk).
-# 3. Remove the "# " at the start of the two rules and redeploy.
+# Switched off (commented out) until the domain is connected, so nothing breaks before then:
+# 1. Add blacklinehq.co.uk to the site in Netlify's domain settings. Netlify then sets up HTTPS for it automatically.
+# 2. Remove the "# " at the start of the two rules below and redeploy.
 #
-# https://blacklinehq.netlify.app/*  https://[DOMAIN]/:splat  301!
-# https://www.[DOMAIN]/*             https://[DOMAIN]/:splat  301!
+# https://blacklinehq.netlify.app/*  https://blacklinehq.co.uk/:splat  301!
+# https://www.blacklinehq.co.uk/*    https://blacklinehq.co.uk/:splat  301!

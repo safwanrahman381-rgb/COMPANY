@@ -28,8 +28,8 @@ Static site for Netlify. No build step: deploy the repository root as it is.
    highlighted in yellow on the pages. Search the repository for `[` to find them all.
 2. **Formspree:** create a form, then put its ID in `CONFIG.contactEndpoint` in `app.js`
    (`https://formspree.io/f/YOUR_ID`). Until then the enquiry form sends nothing and shows visitors an email fallback.
-3. **Domain:** add it in Netlify's domain settings, then replace `[DOMAIN]` in `index.html`, the legal pages,
-   `sitemap.xml`, `robots.txt` and `_redirects`, and switch the redirect rules on (instructions are in the file).
+3. **Domain:** add blacklinehq.co.uk in Netlify's domain settings, then switch on the redirect rules in
+   `_redirects` (instructions are in the file).
 4. **Legal pages:** have them reviewed, then remove the `Draft — review before publishing` comment at the top of each.
 5. **Check it live:** run Lighthouse (mobile) on the deployed site, and send a test enquiry.
 
