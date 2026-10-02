@@ -14,7 +14,7 @@ const CONFIG = {
   aiEndpoint: null,
   // Formspree form that receives project briefs (POSTed as JSON). Replace the placeholder with the
   // form ID from your Formspree dashboard. Until then nothing is sent and visitors get the email fallback.
-  contactEndpoint: 'https://formspree.io/f/[FORMSPREE_FORM_ID]',
+  contactEndpoint: 'https://formspree.io/f/xppwgbre',
   // Shown with a mailto: link if sending fails.
   contactEmail: 'info@blacklinehq.co.uk',
   // Analytics or marketing trackers that need consent. Keep this EMPTY until you need one: while it's empty
