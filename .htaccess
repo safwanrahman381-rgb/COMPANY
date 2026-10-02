@@ -1,0 +1,36 @@
+# BLACKLINE on IONOS (Apache web hosting).
+# Does the same job as _headers and _redirects do on Netlify.
+
+ErrorDocument 404 /404.html
+Options -Indexes
+AddType font/woff2 .woff2
+AddType image/svg+xml .svg
+
+# One address for the site: https://blacklinehq.co.uk (no www, always HTTPS).
+# Needs the SSL certificate switched on for the domain in IONOS first.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://blacklinehq.co.uk%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Security headers. The Content-Security-Policy only allows the site's own files,
+# plus Formspree for the enquiry form. Change it if you add other services (see app.js).
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+  <FilesMatch "\.woff2$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# Smaller downloads for text files.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript image/svg+xml application/xml text/plain
+</IfModule>
