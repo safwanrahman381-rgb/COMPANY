@@ -16,7 +16,7 @@ const CONFIG = {
   // form ID from your Formspree dashboard. Until then nothing is sent and visitors get the email fallback.
   contactEndpoint: 'https://formspree.io/f/[FORMSPREE_FORM_ID]',
   // Shown with a mailto: link if sending fails.
-  contactEmail: '[CONTACT_EMAIL]',
+  contactEmail: 'info@blacklinehq.co.uk',
   // Analytics or marketing trackers that need consent. Keep this EMPTY until you need one: while it's empty
   // no cookie banner renders, no cookies are set and nothing third-party loads. See "Consent" below.
   trackers: []
