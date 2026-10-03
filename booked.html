@@ -13,6 +13,17 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css?v=3">
+<!-- This page's own styles live here (inline styles are allowed by the site's CSP; inline scripts are not),
+     so the page looks right whichever version of styles.css the server has. -->
+<style>
+.booked h1{overflow-wrap:anywhere;}
+.next{list-style:none; margin:16px 0 0; padding:0; display:grid; gap:10px; counter-reset:step;}
+.next li{display:grid; grid-template-columns:30px 1fr; gap:12px; padding:16px 18px; border:1px solid var(--line); border-radius:14px; background:var(--glass); color:var(--ink-2); counter-increment:step;}
+.next li::before{content:counter(step, decimal-leading-zero); font-family:var(--m); font-size:.72rem; letter-spacing:.06em; line-height:1.55rem; color:var(--current-hi);}
+.booked-change{margin-top:22px; color:var(--ink-2);}
+.booked-cta{margin-top:30px;}
+.doc .booked-cta .btn{color:#000; text-decoration:none;}
+</style>
 <script src="booked.js?v=3" defer></script>
 </head>
 <body>
