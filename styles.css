@@ -686,7 +686,7 @@ h1,h2,h3,h4{margin:0; font-weight:inherit;}
 .doc p + p, .doc ul + p, .doc table + p{margin-top:12px;}
 .doc ul{margin:12px 0 0; padding-left:1.2em; display:grid; gap:8px;}
 .doc li::marker{color:var(--current-hi);}
-.doc a{color:var(--ink); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--current-hi);}
+.doc a:not(.btn){color:var(--ink); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--current-hi);}
 .doc strong{color:var(--ink); font-weight:700;}
 .doc table{width:100%; border-collapse:collapse; margin-top:14px; font-size:.95rem;}
 .doc th, .doc td{text-align:left; vertical-align:top; padding:12px 14px 12px 0; border-bottom:1px solid var(--line);}
@@ -701,6 +701,13 @@ h1,h2,h3,h4{margin:0; font-weight:inherit;}
 .legal-nav .btn{--h:40px;}
 @media (max-width:480px){ .legal-nav .hide-s{display:none;} }
 .nf{min-height:70vh; display:grid; align-content:center; gap:28px;}
+/* booked.html: after a discovery call is booked */
+.booked h1{overflow-wrap:anywhere;}
+.next{list-style:none; margin:16px 0 0; padding:0; display:grid; gap:10px; counter-reset:step;}
+.next li{display:grid; grid-template-columns:30px 1fr; gap:12px; padding:16px 18px; border:1px solid var(--line); border-radius:14px; background:var(--glass); color:var(--ink-2); counter-increment:step;}
+.next li::before{content:counter(step, decimal-leading-zero); font-family:var(--m); font-size:.72rem; letter-spacing:.06em; line-height:1.55rem; color:var(--current-hi);}
+.booked-change{margin-top:22px; color:var(--ink-2);}
+.booked-cta{margin-top:30px;}
 
 /* cookie consent banner — dormant: only rendered when CONFIG.trackers has entries */
 .consent{position:fixed; left:calc(var(--pad) + var(--rail)); right:var(--pad); bottom:calc(16px + env(safe-area-inset-bottom,0px)); z-index:150; max-width:520px; display:grid; gap:12px; padding:18px 20px;

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex">
+<title>You're booked in — BLACKLINE</title>
+<meta name="description" content="Your discovery call with BLACKLINE is booked.">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="booked.js" defer></script>
+</head>
+<body>
+<a class="sr skip" href="#main">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav scrolled legal-nav">
+  <div class="wrap nav-in">
+    <a href="./" class="logo" aria-label="BLACKLINE, home"><span class="bar"></span>BLACKLINE</a>
+  </div>
+</header>
+
+<!-- The page GoHighLevel sends people to after they book a discovery call.
+     Redirect URL to use in the calendar: https://blacklinehq.co.uk/booked.html?name={{contact.first_name}}
+     booked.js swaps in the first name; without one the greeting below stays as it is. -->
+<main id="main" class="legal">
+  <div class="wrap">
+    <article class="doc booked">
+      <p class="mono accent">Discovery call booked</p>
+      <h1 class="d d-m" id="bookedTitle">Thanks — you're booked in.</h1>
+
+      <h2>What happens next</h2>
+      <ol class="next">
+        <li>You'll get a confirmation email shortly (check your spam folder just in case).</li>
+        <li>We'll send you a reminder the day before and an hour before your call.</li>
+        <li>I'll ring you on the number you gave at your booked time. The call takes about 30 minutes.</li>
+        <li>Have a think about where your team loses the most time — that's where we'll start.</li>
+      </ol>
+      <p class="booked-change">Need to change your time? Use the link in your confirmation email.</p>
+
+      <div class="btn-row booked-cta"><a href="./" class="btn btn-p"><span>Back to the homepage</span></a></div>
+    </article>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <a href="./" class="logo"><span class="bar"></span>BLACKLINE</a>
+      <nav aria-label="Footer"><a href="./#leak">What we fix</a><a href="./#services">Services</a><a href="./#demos">Demos</a><a href="./#process">Process</a><a href="./#intake">Start a project</a></nav>
+      <span>Systems that work.</span>
+    </div>
+    <div class="foot-legal">
+      <div>
+        <p>© 2026 BLACKLINE. BLACKLINE is a trading name of Safwan Rahman.</p>
+        <!-- If you form a limited company, add: <p>Registered in England and Wales, company no. [NUMBER], registered office [ADDRESS].</p> -->
+        <!-- Add a business address here when you have one, e.g. <p>[BUSINESS ADDRESS]</p> -->
+        <p><a href="mailto:info@blacklinehq.co.uk">info@blacklinehq.co.uk</a></p>
+      </div>
+      <!-- If CONFIG.trackers in app.js is ever used, add here: <a href="/#cookie-settings">Cookie settings</a> -->
+      <nav aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="accessibility.html">Accessibility</a></nav>
+    </div>
+    <div class="big-mark" aria-hidden="true">BLACKLINE</div>
+  </div>
+</footer>
+</body>
+</html>

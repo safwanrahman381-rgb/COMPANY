@@ -10,7 +10,8 @@ Static site for Netlify. No build step: deploy the repository root as it is.
 | `styles.css` | All styles, shared by every page |
 | `app.js` | All behaviour. Settings are in `CONFIG` at the top |
 | `privacy.html`, `terms.html`, `accessibility.html` | Legal pages (drafts, no JavaScript) |
-| `404.html` | Shown by Netlify for any missing page |
+| `404.html` | Shown for any missing page |
+| `booked.html`, `booked.js` | Thank-you page after booking a discovery call in GoHighLevel (not indexed by Google) |
 | `fonts/` | Self-hosted Archivo and JetBrains Mono (SIL Open Font License), see `fonts/README.md` |
 | `_headers` | Security headers and the Content-Security-Policy |
 | `_redirects` | Redirects to the main domain (switched off until the domain is set) |
