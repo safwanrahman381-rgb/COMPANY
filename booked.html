@@ -12,8 +12,8 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css">
-<script src="booked.js" defer></script>
+<link rel="stylesheet" href="styles.css?v=2">
+<script src="booked.js?v=2" defer></script>
 </head>
 <body>
 <a class="sr skip" href="#main">Skip to content</a>
@@ -27,7 +27,9 @@
 
 <!-- The page GoHighLevel sends people to after they book a discovery call.
      Redirect URL to use in the calendar: https://blacklinehq.co.uk/booked.html?name={{contact.first_name}}
-     booked.js swaps in the first name; without one the greeting below stays as it is. -->
+     booked.js swaps in the first name; without one the greeting below stays as it is.
+     The ?v=2 on styles.css and booked.js makes browsers fetch the new files instead of an old saved copy:
+     bump the number whenever either file changes. -->
 <main id="main" class="legal">
   <div class="wrap">
     <article class="doc booked">
