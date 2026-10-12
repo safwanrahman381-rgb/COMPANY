@@ -26,7 +26,7 @@
     root.innerHTML = `
       <p class="eyebrow">Order received</p>
       <h1>Thank <em>you!</em></h1>
-      <p>Your order has been received. You'll get a confirmation email shortly.</p>
+      <p>Your order has been received. We'll email you when it ships.</p>
       <p><a class="btn" href="/products">Continue shopping</a></p>`;
     return;
   }
@@ -38,8 +38,8 @@
     <p class="eyebrow">Order ${escapeHtml(order.reference)}</p>
     <h1>Thank you for <em>your order</em></h1>
     <p>${order.status === 'pending'
-      ? 'We\'re confirming your payment. You\'ll get an email as soon as it\'s done.'
-      : `We've received your payment${order.email ? ` and sent a receipt to <strong>${escapeHtml(order.email)}</strong>` : ''}. We'll email you again when your order ships.`}</p>
+      ? 'We\'re confirming your payment. This page will update in a moment.'
+      : 'We\'ve received your payment. We\'ll email you when your order ships.'}</p>
     <div class="summary" style="position:static;margin:32px 0">
       <h2>Order summary</h2>
       ${rows}

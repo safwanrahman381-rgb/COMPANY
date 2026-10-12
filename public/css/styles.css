@@ -836,7 +836,7 @@ label { display: block; font-weight: 500; margin-bottom: 6px; font-size: 14px; }
   top: calc(var(--header-h) + 24px);
 }
 
-.summary h2 { font-size: 24px; }
+.summary h2 { font-size: 24px; margin-top: 0; }
 
 .code-form { display: flex; gap: 8px; margin: 16px 0 4px; }
 

@@ -323,7 +323,6 @@ router.get('/api/order', (req, res, { query }) => {
     discountAmount: order.discountAmount,
     shippingAmount: order.shippingAmount,
     total: order.total,
-    email: order.customer && order.customer.email,
   });
 });
 

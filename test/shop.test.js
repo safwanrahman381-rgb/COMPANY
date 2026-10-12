@@ -159,7 +159,7 @@ test('a paid webhook marks the order paid and takes stock exactly once', async (
 
   const lookup = await (await realFetch(`${base}/api/order?session_id=${sessionId}`)).json();
   assert.equal(lookup.status, 'paid');
-  assert.equal(lookup.email, 'jane@example.com');
+  assert.equal(lookup.email, undefined, 'confirmation page must not expose the customer email');
 });
 
 test('admin API needs the password', async () => {
