@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products</title>
+  <meta name="description" content="Skincare treatments delivered across the UK.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main id="main">
+    <div class="container">
+      <h1 class="page-title" id="products-title">Products</h1>
+      <div class="toolbar">
+        <div class="chips" id="category-chips"></div>
+        <label class="visually-hidden" for="sort">Sort by</label>
+        <select class="select" id="sort">
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
+          <option value="name">Alphabetically, A–Z</option>
+        </select>
+      </div>
+      <div class="grid" id="product-grid" aria-live="polite"></div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/app.js"></script>
+  <script src="/js/products.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+[
+  { "slug": "tretinoin-cream", "name": "Tretinoin Cream", "inFooter": true },
+  { "slug": "tazarotene-gel", "name": "Tazarotene Gel", "inFooter": true },
+  { "slug": "azelaic-acid-cream", "name": "Azelaic Acid Cream", "inFooter": true },
+  { "slug": "other", "name": "Other Treatments", "inFooter": false }
+]

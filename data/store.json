@@ -1,0 +1,24 @@
+{
+  "name": "Barno's Hut",
+  "tagline": "Your skin. Your formula. Your journey.",
+  "currency": "gbp",
+  "currencySymbol": "£",
+  "contactEmail": "hello@example.com",
+  "announcement": {
+    "enabled": true,
+    "headline": "Get 10% off your order",
+    "code": "MAX"
+  },
+  "discountCodes": {
+    "MAX": { "percentOff": 10, "label": "10% off" }
+  },
+  "shipping": {
+    "allowedCountries": ["GB"],
+    "freeOver": 3000,
+    "options": [
+      { "id": "standard", "name": "Royal Mail Tracked 48", "amount": 395, "minDays": 2, "maxDays": 4 },
+      { "id": "express", "name": "Royal Mail Tracked 24", "amount": 595, "minDays": 1, "maxDays": 2 }
+    ]
+  },
+  "featuredLimit": 6
+}

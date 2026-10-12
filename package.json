@@ -1,0 +1,16 @@
+{
+  "name": "barnos-hut-shop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Online shop with product catalogue, cart, discount codes, Stripe payments and an admin dashboard. No dependencies.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact</title>
+  <meta name="description" content="Skincare treatments delivered across the UK.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main id="main">
+    <div class="container prose">
+      <h1 class="page-title">Contact</h1>
+      <p class="center">Questions about a product or an order? Send us a message and we'll reply within 1–2 working days.</p>
+      <div id="contact-status" aria-live="polite"></div>
+      <form id="contact-form" novalidate>
+        <div class="field"><label for="c-name">Name</label><input class="input" id="c-name" name="name" required autocomplete="name"></div>
+        <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" name="email" type="email" required autocomplete="email"></div>
+        <div class="field"><label for="c-order">Order reference (optional)</label><input class="input" id="c-order" name="orderNumber"></div>
+        <div class="field"><label for="c-message">Message</label><textarea class="textarea" id="c-message" name="message" required></textarea></div>
+        <div class="visually-hidden" aria-hidden="true"><label for="c-website">Leave this empty</label><input id="c-website" name="website" tabindex="-1" autocomplete="off"></div>
+        <button class="btn btn-block" type="submit">Send message</button>
+      </form>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/js/app.js"></script>
+  <script src="/js/contact.js"></script>
+</body>
+</html>
