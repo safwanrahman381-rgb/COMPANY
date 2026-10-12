@@ -1,5 +1,5 @@
 {
-  "name": "barnos-hut-shop",
+  "name": "velora-skin-shop",
   "version": "1.0.0",
   "private": true,
   "description": "Online shop with product catalogue, cart, discount codes, Stripe payments and an admin dashboard. No dependencies.",

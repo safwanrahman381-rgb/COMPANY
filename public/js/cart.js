@@ -101,12 +101,12 @@
               <span>Discount (${escapeHtml(quote.discount.code)}) <button class="link-btn" type="button" id="remove-code">Remove</button></span>
               <span>−${money(quote.discount.amount)}</span>
             </div>` : ''}
-          <div class="summary-row"><span>Shipping</span><span>${quote.shippingFrom === 0 ? 'Free' : `from ${money(quote.shippingFrom)}`}</span></div>
+          <div class="summary-row"><span>Shipping</span><span>${quote.shippingFrom === 0 ? 'Free' : `${s.shipping.options.length > 1 ? 'from ' : ''}${money(quote.shippingFrom)}`}</span></div>
           ${freeOver ? `
             <p class="small" style="margin:12px 0 0">${remaining > 0 ? `Spend ${money(remaining)} more for free UK shipping.` : 'You qualify for free UK shipping.'}</p>
             <div class="progress" aria-hidden="true"><span style="width:${Math.min(100, (quote.afterDiscount / freeOver) * 100)}%"></span></div>` : ''}
           <div class="summary-row total"><span>Total</span><span>${money(quote.afterDiscount + quote.shippingFrom)}</span></div>
-          <p class="small">Tax included. Shipping options are chosen at checkout.</p>
+          <p class="small">Tax included.</p>
           <div id="checkout-error"></div>
           <button class="btn btn-block" type="button" id="checkout">Check out</button>
           <p class="small secure">${icons.lock} Secure payment by Stripe${s.demoMode ? ' (demo mode)' : ''}</p>

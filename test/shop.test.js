@@ -82,6 +82,16 @@ test('sold-out products and bad quantities are rejected', async () => {
 let orderId;
 let sessionId;
 
+test('orders under £30 pay £3.49 standard shipping', async () => {
+  stripeCalls.length = 0;
+  assert.equal((await post('/api/checkout', { items: [{ slug: 'tretinoin-cream-0-1-20g', qty: 1 }] })).status, 200);
+  const b = stripeCalls.find((c) => c.url.endsWith('/checkout/sessions')).body;
+  assert.equal(b.get('shipping_options[0][shipping_rate_data][display_name]'), 'Standard');
+  assert.equal(b.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '349');
+  assert.equal(b.get('shipping_options[0][shipping_rate_data][delivery_estimate][minimum][value]'), '3');
+  assert.equal(b.get('shipping_options[0][shipping_rate_data][delivery_estimate][maximum][value]'), '5');
+});
+
 test('checkout creates a Stripe session with server prices, coupon and free shipping', async () => {
   stripeCalls.length = 0;
   const res = await post('/api/checkout', { items: [{ slug: 'azelaic-acid-cream-20-20g', qty: 2 }], code: 'MAX' });
@@ -95,9 +105,9 @@ test('checkout creates a Stripe session with server prices, coupon and free ship
   assert.equal(b.get('line_items[0][quantity]'), '2');
   assert.equal(b.get('line_items[0][price_data][currency]'), 'gbp');
   assert.equal(b.get('discounts[0][coupon]'), 'MAX-10');
-  // 3600 - 10% = 3240, over the £30 threshold, so the first option is free.
+  // 3600 - 10% = 3240, over the £30 threshold, so standard shipping is free.
   assert.equal(b.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
-  assert.equal(b.get('shipping_options[1][shipping_rate_data][fixed_amount][amount]'), '595');
+  assert.equal(b.get('shipping_options[1][shipping_rate_data][fixed_amount][amount]'), null);
   assert.equal(b.get('success_url'), 'https://shop.example/checkout/success?session_id={CHECKOUT_SESSION_ID}');
 
   orderId = b.get('metadata[orderId]');

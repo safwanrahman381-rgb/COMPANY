@@ -1,4 +1,4 @@
-# Barno's Hut — online shop
+# Velora Skin — online shop
 
 A complete online shop: product catalogue, categories, search, product pages, cart,
 discount codes, card payments through Stripe Checkout, order confirmation, contact form,
