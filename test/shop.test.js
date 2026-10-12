@@ -13,12 +13,12 @@ process.env.ADMIN_PASSWORD = 'admin-pass';
 process.env.PUBLIC_URL = 'https://shop.example';
 
 // Fixtures: a discount code and one sold-out product, layered over the shop's real data.
-const seed = (name) => JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', `${name}.json`), 'utf8'));
-fs.writeFileSync(path.join(dataDir, 'store.json'), JSON.stringify({ ...seed('store'), discountCodes: { MAX: { percentOff: 10, label: '10% off' } } }));
-fs.writeFileSync(
-  path.join(dataDir, 'products.json'),
-  JSON.stringify(seed('products').map((p) => (p.slug === 'tretinoin-cream-0-05-20g' ? { ...p, stock: 0 } : p)))
-);
+const { SEED } = require('../lib/shop');
+const seed = {
+  ...SEED,
+  store: { ...SEED.store, discountCodes: { MAX: { percentOff: 10, label: '10% off' } } },
+  products: SEED.products.map((p) => (p.slug === 'tretinoin-cream-0-05-20g' ? { ...p, stock: 0 } : p)),
+};
 
 // Stand-in for Stripe's API: records requests and answers like Stripe would.
 const realFetch = globalThis.fetch;
@@ -34,7 +34,8 @@ globalThis.fetch = async (url, options = {}) => {
   return json(404, { error: { message: 'unexpected' } });
 };
 
-const server = require('../server');
+const { createApp } = require('../server');
+const server = createApp({ dataDir, seed });
 let base;
 
 before(async () => {
@@ -49,7 +50,9 @@ after(() => {
 
 const post = (p, body, headers = {}) =>
   realFetch(base + p, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: typeof body === 'string' ? body : JSON.stringify(body) });
-const readData = (name) => JSON.parse(fs.readFileSync(path.join(dataDir, `${name}.json`), 'utf8'));
+const readData = (key) => JSON.parse(fs.readFileSync(path.join(dataDir, `${key}.json`), 'utf8'));
+const readAll = (folder) =>
+  fs.readdirSync(path.join(dataDir, folder)).map((f) => JSON.parse(fs.readFileSync(path.join(dataDir, folder, f), 'utf8')));
 const stockOf = async (slug) => {
   const all = await realFetch(`${base}/api/admin/products`, { headers: { Authorization: `Basic ${Buffer.from('a:admin-pass').toString('base64')}` } }).then((r) => r.json());
   return all.find((p) => p.slug === slug).stock;
@@ -119,7 +122,7 @@ test('checkout creates a Stripe session with server prices, coupon and free ship
   assert.equal(b.get('success_url'), 'https://shop.example/checkout/success?session_id={CHECKOUT_SESSION_ID}');
 
   orderId = b.get('metadata[orderId]');
-  const order = readData('orders').find((o) => o.id === orderId);
+  const order = readData(`orders/${orderId}`);
   assert.equal(order.status, 'pending');
   sessionId = order.stripeSessionId;
 });
@@ -152,7 +155,7 @@ test('a paid webhook marks the order paid and takes stock exactly once', async (
     assert.equal((await post('/api/stripe/webhook', payload, { 'Stripe-Signature': header })).status, 200);
   }
   assert.equal(await stockOf('azelaic-acid-cream-20-20g'), before - 2);
-  const order = readData('orders').find((o) => o.id === orderId);
+  const order = readData(`orders/${orderId}`);
   assert.equal(order.status, 'paid');
   assert.equal(order.customer.name, 'Jane Doe');
   assert.equal(order.total, 3240);
@@ -181,5 +184,22 @@ test('static files cannot escape the public folder', async () => {
 test('contact form stores messages and rejects bad input', async () => {
   assert.equal((await post('/api/contact', { name: 'A', email: 'not-an-email', message: 'hi' })).status, 400);
   assert.equal((await post('/api/contact', { name: 'A', email: 'a@b.co', message: 'hello' })).status, 200);
-  assert.equal(readData('messages').at(-1).message, 'hello');
+  assert.ok(readAll('messages').some((m) => m.message === 'hello'));
+});
+
+test('admin price and stock changes are saved and shown in the shop', async () => {
+  const auth = { Authorization: `Basic ${Buffer.from('a:admin-pass').toString('base64')}`, 'Content-Type': 'application/json' };
+  const res = await realFetch(`${base}/api/admin/products/hydroquinone-cream-4-20g`, { method: 'PATCH', headers: auth, body: JSON.stringify({ price: 1250, stock: 2 }) });
+  assert.equal(res.status, 200);
+  const p = await (await realFetch(`${base}/api/products/hydroquinone-cream-4-20g`)).json();
+  assert.equal(p.price, 1250);
+  assert.equal(p.maxQty, 2);
+  assert.equal((await realFetch(`${base}/api/admin/products/nope`, { method: 'PATCH', headers: auth, body: '{}' })).status, 404);
+});
+
+test('pages and product photos are served', async () => {
+  for (const p of ['/', '/products', '/products/tretinoin-cream-0-1-20g', '/cart', '/about', '/policies/privacy', '/checkout/success', '/images/products/tretinoin-cream-0-1-20g.jpg']) {
+    assert.equal((await realFetch(base + p)).status, 200, p);
+  }
+  assert.equal((await realFetch(`${base}/nope`)).status, 404);
 });

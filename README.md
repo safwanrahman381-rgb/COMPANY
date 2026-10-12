@@ -5,7 +5,8 @@ search, product pages with a strength picker, a slide-out bag, card payments thr
 Stripe Checkout, order confirmation, contact form, policy pages and a password-protected
 admin dashboard for orders, stock and messages.
 
-It has **no dependencies**. It runs on Node.js 22 or newer with nothing to install.
+It runs on Node.js 22 or newer. Running it locally needs nothing installed; on Netlify the
+only dependency (`@netlify/blobs`, for storage) is installed automatically.
 
 ## Run it on your computer
 
@@ -56,15 +57,16 @@ Everything you'll want to change is in `data/`:
 | File | What it controls |
 | --- | --- |
 | `data/store.json` | Shop name, tagline, contact email, the notices in the thin top bar, discount codes, delivery price, free-delivery threshold |
-| `data/products.json` | Products: name, price **in pence** (1600 = £16.00), stock, category, group, strength, form, size, badge, featured, summary, description, how to use, ingredients |
+| `data/products.json` | Products: name, price **in pence** (1600 = £16.00), starting stock, category, group, strength, form, size, badge, featured, image, summary, description, how to use, ingredients |
 | `data/categories.json` | Treatments: name, the concern they target, and the short blurb shown on the home page |
 | `data/pages.json` | Text of the policy pages (`{{storeName}}` and `{{contactEmail}}` are filled in for you) |
 
 Product photos go in `public/images/products/`, named after the product's `slug`
 (e.g. `tretinoin-cream-0-1-20g.jpg`), square, at least 700×700.
 
-Restart the server after editing these files. Price, stock and "featured" can also be
-changed live from `/admin`.
+Changes to these files go live when you push them (Netlify redeploys automatically).
+Price, stock and "featured" can also be changed instantly from `/admin`; changes made there
+take priority over the file.
 
 ## Take real payments (Stripe)
 
@@ -76,7 +78,7 @@ changed live from `/admin`.
      `checkout.session.async_payment_failed`, `checkout.session.expired`
    - Copy the **signing secret** (`whsec_…`).
 4. Copy `.env.example` to `.env` and fill in `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,
-   `ADMIN_PASSWORD`, `PUBLIC_URL` and `NODE_ENV=production`.
+   `ADMIN_PASSWORD` and `NODE_ENV=production` (plus `PUBLIC_URL` if you host it somewhere other than Netlify).
 5. Make a test purchase with card `4242 4242 4242 4242`, any future date and any CVC.
    The order should appear in `/admin` as **paid**.
 
@@ -86,20 +88,32 @@ time they're used. Refunds are made in the Stripe dashboard.
 To test webhooks on your own computer, use the Stripe CLI:
 `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
 
-## Put it online
+## Put it online (Netlify, free)
 
-Any host that runs Node.js works: Render, Railway, Fly.io, a VPS, and so on.
+The site is set up for Netlify: pages are served as files and the shop's API runs as a
+Netlify Function. Orders, messages and stock changes are saved in Netlify Blobs, so nothing
+is lost between deploys and the site never "sleeps".
 
-- Start command: `node server.js`
-- Set the environment variables from `.env.example` in the host's dashboard.
-- **Attach a persistent disk** and set `DATA_DIR` to its path (e.g. `/var/data`).
-  Orders, messages and stock levels are saved there. Without a persistent disk, many
-  hosts wipe them on every deploy. Files missing from `DATA_DIR` are read from `./data`,
-  so the shop works on first boot.
-- Point your domain at it. HTTPS is required for payments, and these hosts provide it for free.
+1. Sign in at https://app.netlify.com with GitHub → **Add new site → Import an existing project** → pick this repo and branch.
+   Netlify reads `netlify.toml`, so leave the build settings as they are.
+2. **Site configuration → Environment variables → Add a variable → Import from a .env file**, and paste:
+   ```
+   STRIPE_SECRET_KEY=sk_test_...
+   STRIPE_WEBHOOK_SECRET=whsec_...
+   ADMIN_PASSWORD=...
+   NODE_ENV=production
+   ```
+   `PUBLIC_URL` is not needed on Netlify: the site uses whatever address it's visited on.
+3. **Deploys → Trigger deploy**.
+4. In Stripe → Webhooks → your destination → **Edit destination**, set the URL to
+   `https://YOUR-SITE.netlify.app/api/stripe/webhook`. The signing secret stays the same.
+5. **Site configuration → Change site name** to choose the `.netlify.app` address, or add your own
+   domain under **Domain management**. (After changing the address, update the webhook URL again.)
 
-Orders are stored as JSON files, which is fine for a small shop. If you grow to many
-orders a day, move them to a database.
+### Other hosts
+
+`node server.js` runs the same shop on any Node host (Render, a VPS, your computer). It saves
+data as JSON files in `.data/`, or in `DATA_DIR` if set, so use a persistent disk there.
 
 ## Before you launch: legal checklist
 

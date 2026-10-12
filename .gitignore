@@ -1,6 +1,8 @@
 node_modules/
 .env
+.data/
 data/orders.json
 data/messages.json
+.netlify/
 *.tmp
 .DS_Store

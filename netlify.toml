@@ -1,0 +1,57 @@
+# Netlify settings. The site needs no build step: pages are served from /public and the
+# shop's API runs as a function from netlify/functions.
+[build]
+  publish = "public"
+  command = "echo 'No build step needed'"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Pages that are rendered in the browser from a shared HTML file.
+[[redirects]]
+  from = "/products"
+  to = "/products.html"
+  status = 200
+
+[[redirects]]
+  from = "/products/*"
+  to = "/product.html"
+  status = 200
+
+[[redirects]]
+  from = "/policies/*"
+  to = "/policy.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/policy.html"
+  status = 200
+
+[[redirects]]
+  from = "/checkout/success"
+  to = "/success.html"
+  status = 200
+
+[[redirects]]
+  from = "/cart"
+  to = "/cart.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
