@@ -12,6 +12,14 @@ process.env.STRIPE_WEBHOOK_SECRET = 'whsec_test';
 process.env.ADMIN_PASSWORD = 'admin-pass';
 process.env.PUBLIC_URL = 'https://shop.example';
 
+// Fixtures: a discount code and one sold-out product, layered over the shop's real data.
+const seed = (name) => JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', `${name}.json`), 'utf8'));
+fs.writeFileSync(path.join(dataDir, 'store.json'), JSON.stringify({ ...seed('store'), discountCodes: { MAX: { percentOff: 10, label: '10% off' } } }));
+fs.writeFileSync(
+  path.join(dataDir, 'products.json'),
+  JSON.stringify(seed('products').map((p) => (p.slug === 'tretinoin-cream-0-05-20g' ? { ...p, stock: 0 } : p)))
+);
+
 // Stand-in for Stripe's API: records requests and answers like Stripe would.
 const realFetch = globalThis.fetch;
 const stripeCalls = [];

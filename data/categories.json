@@ -1,6 +1,6 @@
 [
-  { "slug": "tretinoin-cream", "name": "Tretinoin Cream", "inFooter": true },
-  { "slug": "tazarotene-gel", "name": "Tazarotene Gel", "inFooter": true },
-  { "slug": "azelaic-acid-cream", "name": "Azelaic Acid Cream", "inFooter": true },
-  { "slug": "other", "name": "Other Treatments", "inFooter": false }
+  { "slug": "tretinoin", "name": "Tretinoin", "concern": "Acne, texture & fine lines", "blurb": "The most studied retinoid. Three strengths, so you can start low and build up." },
+  { "slug": "tazarotene", "name": "Tazarotene", "concern": "Stubborn breakouts", "blurb": "A potent next-generation retinoid, available as a gel or a cream." },
+  { "slug": "azelaic-acid", "name": "Azelaic Acid", "concern": "Redness & blemishes", "blurb": "Calms, clears and evens tone. Gentle enough for sensitive skin." },
+  { "slug": "hydroquinone", "name": "Hydroquinone", "concern": "Dark spots & pigmentation", "blurb": "A targeted treatment for melasma and stubborn marks." }
 ]

@@ -3,30 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Products</title>
-  <meta name="description" content="Skincare treatments delivered across the UK.">
+  <title>Shop</title>
+  <meta name="description" content="Clinical-strength skincare treatments, delivered discreetly across the UK.">
+  <meta name="theme-color" content="#0a0a0a">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
   <div id="site-header"></div>
   <main id="main">
     <div class="container">
-      <h1 class="page-title" id="products-title">Products</h1>
-      <div class="toolbar">
-        <div class="chips" id="category-chips"></div>
-        <label class="visually-hidden" for="sort">Sort by</label>
-        <select class="select" id="sort">
-          <option value="featured">Featured</option>
-          <option value="price-asc">Price: low to high</option>
-          <option value="price-desc">Price: high to low</option>
-          <option value="name">Alphabetically, A–Z</option>
-        </select>
+      <header class="page-head">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Shop</span></nav>
+        <h1 id="products-title">All treatments</h1>
+        <p id="products-intro">Clinical-strength treatments for acne, texture, redness and pigmentation.</p>
+      </header>
+      <div class="shop">
+        <aside class="filters" aria-label="Filters">
+          <h2>Treatment</h2>
+          <ul class="filter-list" id="category-filter"></ul>
+          <h2>Availability</h2>
+          <label class="check"><input type="checkbox" id="in-stock"> In stock only</label>
+        </aside>
+        <div>
+          <div class="shop-toolbar">
+            <span class="muted" id="result-count"></span>
+            <label class="visually-hidden" for="sort">Sort by</label>
+            <select class="select" id="sort">
+              <option value="featured">Sort: Recommended</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="name">Name: A–Z</option>
+            </select>
+          </div>
+          <div class="grid cols-3" id="product-grid" aria-live="polite"></div>
+        </div>
       </div>
-      <div class="grid" id="product-grid" aria-live="polite"></div>
     </div>
   </main>
   <div id="site-footer"></div>

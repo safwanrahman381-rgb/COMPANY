@@ -28,7 +28,7 @@
   function login(message) {
     root.innerHTML = `
       <form class="login" id="login-form">
-        <h1 class="page-title">Shop admin</h1>
+        <h1>Shop <em>admin</em></h1>
         ${message ? `<p class="notice error">${escapeHtml(message)}</p>` : ''}
         <div class="field"><label for="pw">Password</label><input class="input" id="pw" type="password" autocomplete="current-password" required></div>
         <button class="btn btn-block" type="submit">Log in</button>
@@ -89,7 +89,7 @@
           <td><input class="input" type="number" min="0" step="1" name="price" value="${p.price}" style="width:110px"> <span class="small">${money(p.price)}</span></td>
           <td><input class="input" type="number" min="0" step="1" name="stock" value="${p.stock}" style="width:90px"></td>
           <td><input type="checkbox" name="featured" ${p.featured ? 'checked' : ''} aria-label="Featured"></td>
-          <td><button class="btn btn-small" type="button" data-save-product>Save</button></td>
+          <td><button class="btn btn-sm" type="button" data-save-product>Save</button></td>
         </tr>`).join('')}
       </tbody></table></div>
       <p class="small">To add products or change names, descriptions and categories, edit <code>data/products.json</code>.</p>`;
@@ -99,11 +99,11 @@
     const messages = await adminApi('/api/admin/messages');
     if (!messages.length) return '<p class="empty">No messages yet.</p>';
     return messages.map((m) => `
-      <div class="summary" style="position:static;margin-bottom:16px;${m.read ? 'opacity:.65' : ''}">
-        <div class="summary-row"><strong>${escapeHtml(m.name)}</strong><span class="small">${date(m.createdAt)}</span></div>
+      <div class="card-msg" style="${m.read ? 'opacity:.6' : ''}">
+        <div class="row"><strong>${escapeHtml(m.name)}</strong><span class="small">${date(m.createdAt)}</span></div>
         <p class="small"><a href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a>${m.orderNumber ? ` · Order ${escapeHtml(m.orderNumber)}` : ''}</p>
         <p style="white-space:pre-wrap">${escapeHtml(m.message)}</p>
-        <button class="btn btn-small btn-outline" type="button" data-read="${escapeHtml(m.id)}" data-value="${m.read ? '' : '1'}">${m.read ? 'Mark unread' : 'Mark read'}</button>
+        <button class="btn btn-sm btn-ghost" type="button" data-read="${escapeHtml(m.id)}" data-value="${m.read ? '' : '1'}">${m.read ? 'Mark unread' : 'Mark read'}</button>
       </div>`).join('');
   }
 
@@ -129,9 +129,9 @@
       body = `<p class="notice error">${escapeHtml(err.message)}</p>`;
     }
 
-    const tabBtn = (id, label) => `<button class="btn btn-small ${tab === id ? '' : 'btn-outline'}" type="button" data-tab="${id}">${label}</button>`;
+    const tabBtn = (id, label) => `<button class="btn btn-sm ${tab === id ? '' : 'btn-ghost'}" type="button" data-tab="${id}">${label}</button>`;
     root.innerHTML = `
-      <div class="summary-row" style="align-items:center"><h1 style="margin:0">Dashboard</h1><button class="link-btn" type="button" id="logout">Log out</button></div>
+      <div class="row" style="align-items:center"><h1 style="margin:0">Dashboard</h1><button class="link-btn" type="button" id="logout">Log out</button></div>
       ${summary.demoMode ? '<p class="notice">Demo mode: Stripe isn\'t configured, so orders here are test orders.</p>' : ''}
       <div class="stats" style="margin-top:24px">
         <div class="stat"><div class="num">${money(summary.revenue)}</div><div class="lbl">Revenue</div></div>

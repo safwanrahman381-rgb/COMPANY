@@ -1,23 +1,29 @@
 {
   "name": "Velora Skin",
-  "tagline": "Clinical skincare, delivered to your door.",
+  "tagline": "Clinical-strength skincare, delivered discreetly across the UK.",
   "currency": "gbp",
   "currencySymbol": "£",
   "contactEmail": "hello@example.com",
-  "announcement": {
-    "enabled": true,
-    "headline": "Get 10% off your order",
-    "code": "MAX"
-  },
-  "discountCodes": {
-    "MAX": { "percentOff": 10, "label": "10% off" }
-  },
+  "discountCodes": {},
   "shipping": {
-    "allowedCountries": ["GB"],
+    "allowedCountries": [
+      "GB"
+    ],
     "freeOver": 3000,
     "options": [
-      { "id": "standard", "name": "Standard", "amount": 349, "minDays": 3, "maxDays": 5 }
+      {
+        "id": "standard",
+        "name": "Standard",
+        "amount": 349,
+        "minDays": 3,
+        "maxDays": 5
+      }
     ]
   },
-  "featuredLimit": 6
+  "featuredLimit": 4,
+  "notices": [
+    "Free UK delivery over £30",
+    "Dispatched within 1 working day",
+    "Discreet, plain packaging"
+  ]
 }

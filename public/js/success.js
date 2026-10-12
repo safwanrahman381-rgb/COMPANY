@@ -24,28 +24,29 @@
 
   if (!order) {
     root.innerHTML = `
-      <h1 class="page-title">Thank you!</h1>
-      <p class="center">Your order has been received. You'll get a confirmation email from Stripe shortly.</p>
-      <p class="center"><a class="btn" href="/products">Continue shopping</a></p>`;
+      <p class="eyebrow">Order received</p>
+      <h1>Thank <em>you!</em></h1>
+      <p>Your order has been received. You'll get a confirmation email shortly.</p>
+      <p><a class="btn" href="/products">Continue shopping</a></p>`;
     return;
   }
 
   const rows = order.items
-    .map((l) => `<div class="summary-row"><span>${escapeHtml(l.name)} × ${l.qty}</span><span>${money(l.total)}</span></div>`)
+    .map((l) => `<div class="row"><span>${escapeHtml(l.name)} × ${l.qty}</span><span>${money(l.total)}</span></div>`)
     .join('');
   root.innerHTML = `
-    <h1 class="page-title">Thank you for your order!</h1>
-    <p class="center">Order reference <strong>${escapeHtml(order.reference)}</strong></p>
-    <p class="center">${order.status === 'pending'
+    <p class="eyebrow">Order ${escapeHtml(order.reference)}</p>
+    <h1>Thank you for <em>your order</em></h1>
+    <p>${order.status === 'pending'
       ? 'We\'re confirming your payment. You\'ll get an email as soon as it\'s done.'
       : `We've received your payment${order.email ? ` and sent a receipt to <strong>${escapeHtml(order.email)}</strong>` : ''}. We'll email you again when your order ships.`}</p>
     <div class="summary" style="position:static;margin:32px 0">
       <h2>Order summary</h2>
       ${rows}
-      <div class="summary-row"><span>Subtotal</span><span>${money(order.subtotal)}</span></div>
-      ${order.discountAmount ? `<div class="summary-row discount"><span>Discount</span><span>−${money(order.discountAmount)}</span></div>` : ''}
-      <div class="summary-row"><span>Shipping</span><span>${order.shippingAmount ? money(order.shippingAmount) : 'Free'}</span></div>
-      <div class="summary-row total"><span>Total paid</span><span>${money(order.total)}</span></div>
+      <div class="row"><span>Subtotal</span><span>${money(order.subtotal)}</span></div>
+      ${order.discountAmount ? `<div class="row discount"><span>Discount</span><span>−${money(order.discountAmount)}</span></div>` : ''}
+      <div class="row"><span>Shipping</span><span>${order.shippingAmount ? money(order.shippingAmount) : 'Free'}</span></div>
+      <div class="row total"><span>Total paid</span><span>${money(order.total)}</span></div>
     </div>
-    <p class="center"><a class="btn" href="/products">Continue shopping</a></p>`;
+    <p><a class="btn" href="/products">Continue shopping</a></p>`;
 })();

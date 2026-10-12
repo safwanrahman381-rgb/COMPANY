@@ -1,8 +1,9 @@
 # Velora Skin — online shop
 
-A complete online shop: product catalogue, categories, search, product pages, cart,
-discount codes, card payments through Stripe Checkout, order confirmation, contact form,
-policy pages and a password-protected admin dashboard for orders, stock and messages.
+A complete online shop with a black-and-gold design: home page, shop with filters and
+search, product pages with a strength picker, a slide-out bag, card payments through
+Stripe Checkout, order confirmation, contact form, policy pages and a password-protected
+admin dashboard for orders, stock and messages.
 
 It has **no dependencies**. It runs on Node.js 22 or newer with nothing to install.
 
@@ -30,10 +31,11 @@ Run the tests with `npm test`.
 
 | Page | URL |
 | --- | --- |
-| Home with featured products | `/` |
-| All products, category filter, sort, search | `/products`, `/products?category=…`, `/products?q=…` |
-| Product page (quantity, add to cart, buy now, details, related products) | `/products/<slug>` |
-| Cart (quantities, discount code, free-shipping progress, checkout) | `/cart` |
+| Home: hero, shop by concern, bestsellers, how it works, FAQ | `/` |
+| Shop: treatment filter, in-stock filter, sort, search | `/products`, `/products?category=…`, `/products?q=…` |
+| Product page: strength picker, quantity, add to bag, details, related products | `/products/<slug>` |
+| Slide-out bag on every page, plus a full bag page | `/cart` |
+| About page | `/about` |
 | Order confirmation | `/checkout/success` |
 | Contact form | `/contact` |
 | Shipping, returns, privacy, terms, legal notice | `/policies/<name>` |
@@ -41,7 +43,8 @@ Run the tests with `npm test`.
 
 Other details:
 
-- The announcement bar's **Copy code** button copies the code and applies it to the cart.
+- Products that share a `group` (e.g. the three tretinoin strengths) get a strength picker on their product page.
+- Discount codes are off. Add one under `discountCodes` in `data/store.json` (e.g. `"WELCOME10": { "percentOff": 10, "label": "10% off" }`) and a code box appears on the bag page.
 - Prices, stock and discounts are always checked on the server. Nobody can change a price in their browser.
 - Sold-out products show a **Sold out** badge and can't be bought. Stock goes down automatically when an order is paid.
 - Stripe Checkout handles cards, Apple Pay and Google Pay, the delivery address, phone number and the email receipt.
@@ -52,13 +55,13 @@ Everything you'll want to change is in `data/`:
 
 | File | What it controls |
 | --- | --- |
-| `data/store.json` | Shop name, tagline, contact email, announcement bar, discount codes, delivery prices, free-shipping threshold |
-| `data/products.json` | Products: name, price **in pence** (1600 = £16.00), stock, category, featured, description, how to use, ingredients |
-| `data/categories.json` | Categories, and which ones appear in the footer |
+| `data/store.json` | Shop name, tagline, contact email, the notices in the thin top bar, discount codes, delivery price, free-delivery threshold |
+| `data/products.json` | Products: name, price **in pence** (1600 = £16.00), stock, category, group, strength, form, size, badge, featured, summary, description, how to use, ingredients |
+| `data/categories.json` | Treatments: name, the concern they target, and the short blurb shown on the home page |
 | `data/pages.json` | Text of the policy pages (`{{storeName}}` and `{{contactEmail}}` are filled in for you) |
 
 Product photos go in `public/images/products/`, named after the product's `slug`
-(e.g. `tretinoin-cream-0-1-20g.jpg`). The images there now are placeholders.
+(e.g. `tretinoin-cream-0-1-20g.jpg`), square, at least 700×700.
 
 Restart the server after editing these files. Price, stock and "featured" can also be
 changed live from `/admin`.

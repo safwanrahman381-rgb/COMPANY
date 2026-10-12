@@ -4,24 +4,105 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Home</title>
-  <meta name="description" content="Skincare treatments delivered across the UK.">
+  <meta name="description" content="Clinical-strength skincare treatments, delivered discreetly across the UK.">
+  <meta name="theme-color" content="#0a0a0a">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
   <div id="site-header"></div>
   <main id="main">
     <section class="hero">
-      <h1 data-store-name></h1>
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">UK skincare treatments</p>
+          <h1>Clinical skincare, <em>made simple.</em></h1>
+          <p class="hero-lead">Proven treatments for acne, texture and pigmentation. Clear guidance on every product, and discreet tracked delivery to your door.</p>
+          <div class="hero-actions">
+            <a class="btn" href="/products">Shop treatments</a>
+            <a class="btn btn-ghost" href="#concerns">Find your treatment</a>
+          </div>
+          <ul class="hero-points" data-hero-points></ul>
+        </div>
+        <div class="hero-visual" data-hero-visual></div>
+      </div>
     </section>
+
+    <div class="container">
+      <div class="trust" data-trust></div>
+    </div>
+
+    <section class="section" id="concerns">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Shop by concern</p>
+            <h2>What are you <em>treating?</em></h2>
+          </div>
+          <p>Not sure where to start? Pick the concern that matters most to you. Every product page explains who it suits.</p>
+        </div>
+        <div class="concerns" data-concerns></div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Most popular</p>
+            <h2>Bestsellers</h2>
+          </div>
+          <a class="arrow-link" href="/products">Shop all treatments →</a>
+        </div>
+        <div class="grid" id="featured" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">How it works</p>
+            <h2>From checkout to <em>your door</em></h2>
+          </div>
+        </div>
+        <div class="steps">
+          <div class="step"><h3>Choose your treatment</h3><p>Browse by concern and read exactly what each product does, who it suits and how to use it.</p></div>
+          <div class="step"><h3>Check out securely</h3><p>Pay by card, Apple Pay or Google Pay through Stripe. We never see or store your card details.</p></div>
+          <div class="step"><h3>Delivered discreetly</h3><p>Dispatched within 1 working day in plain packaging, with tracking sent straight to your inbox.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container faq-wrap">
+        <div>
+          <p class="eyebrow">FAQ</p>
+          <h2>Good to <em>know</em></h2>
+          <p class="muted">Can't find your answer? <a class="arrow-link" href="/contact">Ask us →</a></p>
+        </div>
+        <div class="accordion">
+          <details><summary>Which tretinoin strength should I start with?</summary><div class="content">Most people start with 0.025% and move up to 0.05% or 0.1% once their skin has adjusted, usually after a few months. Starting high tends to cause more irritation, not faster results.</div></details>
+          <details><summary>How long until I see results?</summary><div class="content">Retinoids usually take 8–12 weeks of consistent use to show clear results. Some people go through a short "purging" phase in the first few weeks.</div></details>
+          <details><summary>Can I use these products together?</summary><div class="content">Some combinations work well, such as azelaic acid in the morning and a retinoid at night. Others can irritate. Introduce one product at a time and check the leaflet, or ask a pharmacist.</div></details>
+          <details><summary>How much is delivery?</summary><div class="content" data-faq-delivery>Standard UK delivery is £3.49 (3–5 working days), and free on orders over £30.</div></details>
+          <details><summary>Can I return a product?</summary><div class="content">Unopened products in their original sealed packaging can be returned within 14 days. See our <a href="/policies/returns">returns policy</a>.</div></details>
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <div class="container">
-        <h2 class="section-title">Featured</h2>
-        <div class="grid" id="featured" aria-live="polite"></div>
-        <p class="center" style="margin-top:48px"><a class="btn btn-outline" href="/products">View all products</a></p>
+        <div class="cta">
+          <div>
+            <h2>Not sure what's <em>right for you?</em></h2>
+            <p>Send us a message and a real person will help you choose. We usually reply within one working day.</p>
+          </div>
+          <a class="btn" href="/contact">Get in touch</a>
+        </div>
       </div>
     </section>
   </main>

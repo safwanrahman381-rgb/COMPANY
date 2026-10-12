@@ -57,6 +57,13 @@ function publicProduct(p) {
     name: p.name,
     category: p.category,
     categoryName: category ? category.name : '',
+    concern: category ? category.concern : '',
+    group: p.group || p.slug,
+    strength: p.strength || '',
+    form: p.form || '',
+    size: p.size || '',
+    badge: p.badge || '',
+    summary: p.summary || '',
     price: p.price,
     inStock: p.stock > 0,
     maxQty: Math.max(0, Math.min(p.stock, 10)),
@@ -173,7 +180,8 @@ router.get('/api/store', (req, res) => {
     currency: s.currency,
     currencySymbol: s.currencySymbol,
     contactEmail: s.contactEmail,
-    announcement: s.announcement,
+    notices: s.notices || [],
+    hasDiscounts: Object.keys(s.discountCodes || {}).length > 0,
     shipping: { freeOver: s.shipping && s.shipping.freeOver, options: (s.shipping && s.shipping.options) || [] },
     categories: categories(),
     featuredLimit: s.featuredLimit || 6,
@@ -190,7 +198,7 @@ router.get('/api/products', (req, res, { query }) => {
   if (q) {
     const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
     list = list.filter((p) => {
-      const hay = `${p.name} ${p.category} ${p.description}`.toLowerCase();
+      const hay = `${p.name} ${p.category} ${p.form || ''} ${p.summary || ''} ${p.description}`.toLowerCase();
       return terms.every((t) => hay.includes(t));
     });
   }
@@ -439,6 +447,7 @@ const PAGES = {
   '/contact': 'contact.html',
   '/checkout/success': 'success.html',
   '/policies/:slug': 'policy.html',
+  '/about': 'policy.html',
   '/admin': 'admin.html',
 };
 for (const [route, file] of Object.entries(PAGES)) {

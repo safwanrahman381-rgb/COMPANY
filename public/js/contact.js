@@ -1,7 +1,11 @@
 (function () {
-  const { api, escapeHtml } = window.Shop;
+  const { api, escapeHtml, store } = window.Shop;
   const form = document.getElementById('contact-form');
   const status = document.getElementById('contact-status');
+
+  store.then((s) => {
+    document.querySelector('[data-contact-email]').innerHTML = `<a href="mailto:${escapeHtml(s.contactEmail)}">${escapeHtml(s.contactEmail)}</a>`;
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -17,7 +21,7 @@
       await api('/api/contact', { method: 'POST', body: data });
       form.reset();
       form.hidden = true;
-      status.innerHTML = '<p class="notice success">Thanks! Your message has been sent and we\'ll be in touch soon.</p>';
+      status.innerHTML = '<p class="notice success">Thanks! Your message has been sent and we\'ll get back to you within 1 working day.</p>';
     } catch (err) {
       status.innerHTML = `<p class="notice error">${escapeHtml(err.message)}</p>`;
     } finally {
