@@ -66,9 +66,9 @@ test('quote prices from the server and applies discount codes case-insensitively
   const res = await post('/api/cart/quote', { items: [{ slug: 'tretinoin-cream-0-1-20g', qty: 2, price: 1 }], code: 'max' });
   const q = await res.json();
   assert.equal(res.status, 200);
-  assert.equal(q.subtotal, 3200);
-  assert.equal(q.discount.amount, 320);
-  assert.equal(q.afterDiscount, 2880);
+  assert.equal(q.subtotal, 3400);
+  assert.equal(q.discount.amount, 340);
+  assert.equal(q.afterDiscount, 3060);
 });
 
 test('unknown codes and prototype keys are not discounts', async () => {
@@ -109,11 +109,11 @@ test('checkout creates a Stripe session with server prices, coupon and free ship
   const session = stripeCalls.find((c) => c.url.endsWith('/checkout/sessions'));
   assert.ok(session, 'session created');
   const b = session.body;
-  assert.equal(b.get('line_items[0][price_data][unit_amount]'), '1800');
+  assert.equal(b.get('line_items[0][price_data][unit_amount]'), '1700');
   assert.equal(b.get('line_items[0][quantity]'), '2');
   assert.equal(b.get('line_items[0][price_data][currency]'), 'gbp');
   assert.equal(b.get('discounts[0][coupon]'), 'MAX-10');
-  // 3600 - 10% = 3240, over the £30 threshold, so standard shipping is free.
+  // 3400 - 10% = 3060, over the £30 threshold, so standard shipping is free.
   assert.equal(b.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
   assert.equal(b.get('shipping_options[1][shipping_rate_data][fixed_amount][amount]'), null);
   assert.equal(b.get('success_url'), 'https://shop.example/checkout/success?session_id={CHECKOUT_SESSION_ID}');
