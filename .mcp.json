@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "grok": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "github:libraz/grok-mcp"
+      ],
+      "env": {
+        "XAI_DEFAULT_MODEL": "grok-4.7"
+      }
+    }
+  }
+}
