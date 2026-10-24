@@ -1,0 +1,21 @@
+[
+{"post":"P01","slides":[
+ {"kicker":"Property managers","title":"A tenant enquires at 9pm.","body":"Here's what usually happens next."},
+ {"kicker":"The usual way","title":"9pm. Form sent.","body":"It lands in an inbox nobody checks until morning."},
+ {"kicker":"The usual way","title":"9am. Office opens.","body":"The tenant has probably moved on."},
+ {"kicker":"Same form, with a system behind it","title":"9pm. Reply in seconds.","body":"Which property? When can you view? How many people?"},
+ {"kicker":"Same form, with a system behind it","title":"Viewing booked.","body":"In the calendar. In the CRM. Your team sees it at 9am, done."},
+ {"kicker":"Demo, not a client result","title":"No new website.","body":"Just what happens after the form.\nComment LEAK for the checklist."}
+]},
+{"post":"P06","slides":[
+ {"kicker":"Myth vs reality","title":"A chatbot isn't a system.","body":"If it can't check the calendar, update the CRM and hand off to a human, it's a toy."}
+]},
+{"post":"P10","slides":[
+ {"kicker":"Busy offices","title":"5 places you lose enquiries.","body":"Swipe."},
+ {"kicker":"1","title":"The after-hours form.","body":"It works. Nobody answers until morning."},
+ {"kicker":"2","title":"The shared inbox.","body":"Everyone sees it. Nobody owns it."},
+ {"kicker":"3","title":"The slow first reply.","body":"A plain reply now beats a perfect one tomorrow."},
+ {"kicker":"4","title":"The reply with no next step.","body":"\"Let us know what suits\" is where it goes quiet."},
+ {"kicker":"5","title":"No follow-up.","body":"One reply, then nothing.\nComment LEAK for the checklist."}
+]}
+]
